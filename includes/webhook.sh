@@ -27,7 +27,8 @@ function send_update_and_validate_notification() {
 }
 
 function send_restart_notification() {
-  send_webhook_notification "$WEBHOOK_RESTART_TITLE" "$WEBHOOK_RESTART_DESCRIPTION" "$WEBHOOK_RESTART_COLOR"
+  local restart_time=${1}
+  send_webhook_notification "$WEBHOOK_RESTART_TITLE" "$WEBHOOK_RESTART_DESCRIPTION $restart_time minute(s)" "$WEBHOOK_RESTART_COLOR"
 }
 
 function send_auto_update_start_notification() {

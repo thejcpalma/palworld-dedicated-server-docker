@@ -40,7 +40,7 @@ ___
   - [Need Support? Here's How!](#need-support-heres-how)
   - [Let's Get Started!](#lets-get-started)
   - [Environment variables](#environment-variables)
-  - [Docker-Compose examples](#docker-compose-examples)
+  - [Docker-Compose](#docker-compose)
   - [Run RCON commands](#run-rcon-commands)
   - [Backup Manager](#backup-manager)
   - [Webhook integration](#webhook-integration)
@@ -81,11 +81,10 @@ Always follow the official [Palworld Dedicated Server Requirements](https://tech
 
 Using this Docker image and have something to share? Here's how:
 
-- **Need Help?** Open a [new issue](https://github.com/username/repo/issues/new). Link to similar issues with #issue-number. Close the issue once resolved.
+- **Need Help or Found a Bug?** Open a [new issue](https://github.com/thejcpalma/palworld-dedicated-server-docker/issues/new). 
 
-- **Got a Suggestion?** We're all ears! Share your ideas in a [new issue](https://github.com/username/repo/issues/new).
+- **Got a Suggestion?** We're all ears! Share your ideas in a [new feature request](https://github.com/thejcpalma/palworld-dedicated-server-docker/issues/new).
 
-- **Found a Bug?** Help us improve by reporting it in a [new issue](https://github.com/username/repo/issues/new).
 
 **Community Guidelines:**
 
@@ -116,16 +115,17 @@ Enjoying the project? Give this repo and the [Docker-Hub repository](https://hub
 
 ## Environment variables
 
+Check out the [ENV_VARS.md](/docs/ENV_VARS.md) file for a detailed list of environment variables.
 
-## Docker-Compose examples
+## Docker-Compose
 
+Download/Copy the [docker-compose.yml](docker-compose.yml) and [default.env](default.env) files.
 
 
 ## Run RCON commands
 
 > [!NOTE]
 > Please research the RCON-Commands on the official source: https://tech.palworldgame.com/server-commands
-
 
 
 ## Backup Manager
@@ -187,6 +187,8 @@ After enabling the server should send messages in a Discord-Compatible way to yo
 
 - Server starting
 - Server stopped
+- Server restart
+- Server fresh install
 - Server updating
 - Server updating and validating
 
