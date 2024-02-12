@@ -33,27 +33,26 @@ ___
 
 ## Table of Contents
 
-- [Palworld Dedicated Server on Docker](#palworld-dedicated-server-on-docker)
-  - [Table of Contents](#table-of-contents)
-  - [What You Need to Get Started](#what-you-need-to-get-started)
-  - [Server requirements](#server-requirements)
-  - [Need Support? Here's How!](#need-support-heres-how)
-  - [Let's Get Started!](#lets-get-started)
-  - [Environment variables](#environment-variables)
-  - [Docker-Compose](#docker-compose)
-  - [Run RCON commands](#run-rcon-commands)
-  - [Backup Manager](#backup-manager)
-  - [Webhook integration](#webhook-integration)
-    - [Supported events](#supported-events)
-  - [FAQ](#faq)
-    - [How can I use the interactive console in Portainer with this image?](#how-can-i-use-the-interactive-console-in-portainer-with-this-image)
-    - [How can I look into the config of my Palworld container?](#how-can-i-look-into-the-config-of-my-palworld-container)
-    - [I'm seeing S\_API errors in my logs when I start the container?](#im-seeing-s_api-errors-in-my-logs-when-i-start-the-container)
-    - [I'm using Apple silicon type of hardware, can I run this?](#im-using-apple-silicon-type-of-hardware-can-i-run-this)
-    - [I changed the `BaseCampWorkerMaxNum` setting, why didn't this update the server?](#i-changed-the-basecampworkermaxnum-setting-why-didnt-this-update-the-server)
-  - [Software used](#software-used)
-  - [Major Shoutout](#major-shoutout)
-  - [License](#license)
+- [Table of Contents](#table-of-contents)
+- [What You Need to Get Started](#what-you-need-to-get-started)
+- [Server requirements](#server-requirements)
+- [Need Support? Here's How!](#need-support-heres-how)
+- [Let's Get Started!](#lets-get-started)
+- [Environment variables](#environment-variables)
+- [Docker-Compose](#docker-compose)
+- [Run RCON commands](#run-rcon-commands)
+- [Backup Manager](#backup-manager)
+- [Webhook integration](#webhook-integration)
+  - [Supported events](#supported-events)
+- [FAQ](#faq)
+  - [How can I use the interactive console in Portainer with this image?](#how-can-i-use-the-interactive-console-in-portainer-with-this-image)
+  - [How can I look into the config of my Palworld container?](#how-can-i-look-into-the-config-of-my-palworld-container)
+  - [I'm seeing S\_API errors in my logs when I start the container?](#im-seeing-s_api-errors-in-my-logs-when-i-start-the-container)
+  - [I'm using Apple silicon type of hardware, can I run this?](#im-using-apple-silicon-type-of-hardware-can-i-run-this)
+  - [I changed the `BaseCampWorkerMaxNum` setting, why didn't this update the server?](#i-changed-the-basecampworkermaxnum-setting-why-didnt-this-update-the-server)
+- [Software used](#software-used)
+- [Major Shoutout](#major-shoutout)
+- [License](#license)
 
 ## What You Need to Get Started
 
@@ -97,9 +96,11 @@ Enjoying the project? Give this repo and the [Docker-Hub repository](https://hub
 
 ## Let's Get Started!
 
-1. Make a new folder named `game` in your game-server-directory (For example: `/srv/palworld`).
+1. Make a new folder named `game` in your game-server-directory (For example: `/srv/palworld`, `/home/user/palworld`).
    - This is where the game server files, like configs and savegames, will be stored.
+   - If you use the default `docker-compose.yml` file, it will create a folder named `palworld` in the same directory as the `docker-compose.yml` file.
 2. Set up Port-Forwarding or NAT for the ports mentioned in the Docker-Compose file.
+    - The default port for the game is `8211` and for RCON is `2`.
 3. Get the latest version of the image by typing `docker pull thejcpalma/palworld-dedicated-server:latest` in your terminal.
 4. Download/Copy the [docker-compose.yml](docker-compose.yml) and [default.env](default.env) files.
 5. Adjust the `docker-compose.yml` and `default.env` files as you like.
@@ -121,12 +122,19 @@ Check out the [ENV_VARS.md](/docs/ENV_VARS.md) file for a detailed list of envir
 
 Download/Copy the [docker-compose.yml](docker-compose.yml) and [default.env](default.env) files.
 
-
 ## Run RCON commands
 
 > [!NOTE]
 > Please research the RCON-Commands on the official source: https://tech.palworldgame.com/server-commands
 
+Usage: `docker exec palworld-dedicated-server rconcli [command]`
+Examples:
+
+```shell
+$ docker exec palworld-dedicated-server rconcli ShowPlayers
+> RCON: player,playerid,steamid
+thejcpalma,1234,5789
+```
 
 ## Backup Manager
 
@@ -139,11 +147,11 @@ Download/Copy the [docker-compose.yml](docker-compose.yml) and [default.env](def
 
 Usage: `docker exec palworld-dedicated-server backup [command] [arguments]`
 
-| Command | Argument           | Required/Optional | Default Value                     | Values           | Description                                                                                                                                                                          |
-| ------- | ------------------ | ----------------- | --------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| create  | N/A                | N/A               | N/A                               | N/A              | Creates a backup.                                                                                                                                                                    |
-| list    | `<number_to_list>` | Optional          | N/A                               | Positive numbers | Lists all backups.<br>If `<number_to_list>` is specified, only the most<br>recent `<number_to_list>` backups are listed.                                                             |
-| clean   | `<number_to_keep>` | Optional          | `BACKUP_RETENTION_AMOUNT_TO_KEEP` | Positive numbers | Cleans up backups.<br>If `<number_to_list>` is specified, cleans and keeps<br>the most recent`<number_to_keep>` backups.<br>If not, default to `BACKUP_RETENTION_AMOUNT_TO_KEEP` var |
+| Command | Argument           | Required/Optional | Default Value                      | Values           | Description                                                                                                                                                                           |
+| ------- | ------------------ | ----------------- | ---------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| create  | N/A                | N/A               | N/A                                | N/A              | Creates a backup.                                                                                                                                                                     |
+| list    | `<number_to_list>` | Optional          | N/A                                | Positive integer | Lists all backups.<br>If `<number_to_list>` is specified, only the most<br>recent `<number_to_list>` backups are listed.                                                              |
+| clean   | `<number_to_keep>` | Optional          | `BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP` | Positive integer | Cleans up backups.<br>If `<number_to_keep>` is specified, cleans and keeps<br>the most recent`<number_to_keep>` backups.<br>If not, default to `BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP` var |
 
 Examples:
 
