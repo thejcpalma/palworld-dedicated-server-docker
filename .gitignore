@@ -1,0 +1,8 @@
+.idea/
+.vscode/
+game/
+palworld/
+test/
+docker-compose-*.yml
+custom.env
+test.env

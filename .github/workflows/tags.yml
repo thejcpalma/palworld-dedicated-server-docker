@@ -1,0 +1,30 @@
+name: Update README.md on tag creation
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Update README.md
+      run: |
+        echo "Tag ${{ github.ref }} was created or pushed."
+        VERSION=${GITHUB_REF#refs/tags/}
+        sed "s/readme-\(.*\)-blue/readme-$VERSION-blue/g" README.md > temp.md
+        mv temp.md README.md
+        AUTHOR=$(git log -1 --pretty=format:'%an <%ae>')
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        git add README.md
+        git commit --amend --no-edit --author "$AUTHOR"
+        git push origin HEAD:main --force
