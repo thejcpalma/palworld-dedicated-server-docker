@@ -79,9 +79,18 @@ function start_server() {
 function stop_server() {
     echo_warning ">>> Stopping server..."
 
+    if [[ -n ${RCON_ENABLED} ]] && [[ ${RCON_ENABLED,,} == "true" ]]; then
+        rcon_broadcast_save_and_shutdown
+    else
+	    kill -SIGTERM "$(pidof PalServer-Linux-Test)"
+	    tail --pid="$(pidof PalServer-Linux-Test)" -f 2>/dev/null
+    fi
+
     send_stop_notification
-    
-    rcon_broadcast_save_and_shutdown
+
+    echo_warning ">> Server stopped gracefully"
+    exit 143;
+
 }
 
 # Function to restart the gameserver

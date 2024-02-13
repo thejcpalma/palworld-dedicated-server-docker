@@ -9,8 +9,9 @@ source "${PWD}"/includes/server.sh
 if [ $# -gt 1 ]; then
     exit
 elif [ $# -eq 0 ]; then
-    echo_warning ">> Restarting server in 10 minutes..."
-    restart_server 10
+    # Fallback in case no argument is provided
+    echo_warning ">> Restarting server in 30 minutes..."
+    restart_server 30 &
 else
     if ! [[ $1 =~ ^[0-9]+$ ]]; then
         echo_warning ">>> Invalid argument: ${1}"
@@ -19,10 +20,9 @@ else
 
     if [ "${1}" -eq 0 ]; then
         echo_warning ">> Restarting server now..."
-        restart_server 0
-        exit
+        restart_server 0 &
     else
         echo_warning ">> Restarting server in ${1} minute(s)..."
-        restart_server "${1}"
+        restart_server "${1}" &
     fi
 fi
