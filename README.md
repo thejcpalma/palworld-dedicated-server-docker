@@ -101,11 +101,12 @@ Enjoying the project? Give this repo and the [Docker-Hub repository](https://hub
    - This is where the game server files, like configs and savegames, will be stored.
    - If you use the default `docker-compose.yml` file, it will create a folder named `palworld` in the same directory as the `docker-compose.yml` file.
 2. Set up Port-Forwarding or NAT for the ports mentioned in the Docker-Compose file.
-    - The default port for the game is `8211` and for RCON is `2`.
+   - The default port for the game is `8211` and for RCON is `25575`.
 3. Get the latest version of the image by typing `docker pull thejcpalma/palworld-dedicated-server:latest` in your terminal.
 4. Download/Copy the [docker-compose.yml](docker-compose.yml) and [default.env](default.env) files.
 5. Adjust the `docker-compose.yml` and `default.env` files as you like.
    - Check out the [Environment-Variables](#environment-variables) section for more details.
+   - If you want auto-update and auto-restart features, but not exposing RCON port, just delete the port on the `docker-compose.yml` file.
 6. Start the container by typing `docker-compose up -d && docker-compose logs -f` in your terminal.
    - Keep an eye on the log. If you don't see any errors, you can close the logs with `ctrl+c`.
 7. That's it! Now you can enjoy your game! 🎮😉
