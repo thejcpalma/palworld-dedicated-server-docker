@@ -1,12 +1,11 @@
 name: Update README.md on tag creation
 
 on:
-  push:
-    tags:
-      - '*'
+  create:
 
 jobs:
   build:
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
     permissions:
@@ -18,7 +17,7 @@ jobs:
 
     - name: Update README.md
       run: |
-        echo "Tag ${{ github.ref }} was created or pushed."
+        echo "Tag ${{ github.ref }} was created."
         VERSION=${GITHUB_REF#refs/tags/}
         sed "s/readme-\(.*\)-blue/readme-$VERSION-blue/g" README.md > temp.md
         mv temp.md README.md
