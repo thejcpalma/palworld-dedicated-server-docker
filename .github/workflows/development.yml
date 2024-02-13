@@ -53,14 +53,15 @@ jobs:
       # Defines the readme version to the dev tag
       - name: Update README.md
         run: |
+          echo "Changing README.md version to 'dev'."
           sed "s/readme-\(.*\)-blue/readme-dev-blue/g" README.md > temp.md
           mv temp.md README.md
-          AUTHOR=$(git log -1 --pretty=format:'%an <%ae>')
           git config --local user.email "actions@github.com"
-           git config --local user.name "GitHub Actions"
+          git config --local user.name "GitHub Actions"
+          git pull origin main
           git add README.md
-          git commit --amend --no-edit --author "$AUTHOR"
-          git push origin HEAD:main
+          git commit -m "Update README.md for tag 'dev' [skip ci]"
+          git push origin main
 
       - name: Build and push
         id: build_push
