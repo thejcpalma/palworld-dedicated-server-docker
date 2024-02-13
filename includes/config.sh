@@ -93,9 +93,9 @@ function setup_palworld_settings_ini() {
         echo "> Setting PlayerDamageRateDefense to '$PLAYER_DAMAGE_RATE_DEFENSE'"
         sed -E -i "s/PlayerDamageRateDefense=[+-]?([0-9]*[.])?[0-9]+/PlayerDamageRateDefense=$PLAYER_DAMAGE_RATE_DEFENSE/" "$GAME_SETTINGS_FILE"
     fi
-    if [[ -n ${PLAYER_STOMACH_DECREASE_RATE+x} ]]; then
-        echo "> Setting PlayerStomachDecreaceRate to '$PLAYER_STOMACH_DECREASE_RATE'"
-        sed -E -i "s/PlayerStomachDecreaceRate=[+-]?([0-9]*[.])?[0-9]+/PlayerStomachDecreaceRate=$PLAYER_STOMACH_DECREASE_RATE/" "$GAME_SETTINGS_FILE"
+    if [[ -n ${PLAYER_STOMACH_DECREACE_RATE+x} ]]; then
+        echo "> Setting PlayerStomachDecreaceRate to '$PLAYER_STOMACH_DECREACE_RATE'"
+        sed -E -i "s/PlayerStomachDecreaceRate=[+-]?([0-9]*[.])?[0-9]+/PlayerStomachDecreaceRate=$PLAYER_STOMACH_DECREACE_RATE/" "$GAME_SETTINGS_FILE"
     fi
     if [[ -n ${PLAYER_STAMINA_DECREACE_RATE+x} ]]; then
         echo "> Setting PlayerStaminaDecreaceRate to '$PLAYER_STAMINA_DECREACE_RATE'"

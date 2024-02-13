@@ -21,9 +21,11 @@ These settings control the behavior of the Docker container:
 
 > **Important:** If you want to change the server settings via environment variables use the default value (`auto`) for the environment variable `SERVER_SETTINGS_MODE`, otherwise change it to `manual` and edit the config file directly.
 
-| Variable | Description                                    | Default value | Allowed values                        |
-| -------- | ---------------------------------------------- | ------------- | ------------------------------------- |
-| `TZ`     | Timezone used for time stamping server backups | `UTC`         | See [TZ identifiers](#tz-identifiers) |
+| Variable | Description                                           | Default value | Allowed values                        |
+| -------- | ----------------------------------------------------- | ------------- | ------------------------------------- |
+| `PUID`   | `PUID` stands for Process User ID, also known as UID  | 1000          | Integer                               |
+| `PGID`   | `PGID` stands for Process Group ID, also known as GID | 1000          | Integer                               |
+| `TZ`     | Timezone used for time stamping server backups        | `UTC`         | See [TZ identifiers](#tz-identifiers) |
 
 ### TZ identifiers
 
@@ -42,14 +44,18 @@ These settings control the special features of the server:
  - Auto restarts
  - Auto backups
 
+> [!IMPORTANT]
+>
+> **RCON** should be enabled for all for them to work as expected.
+
 | Variable                           | Description                                                              | Default value | Allowed value                           |
 | ---------------------------------- | ------------------------------------------------------------------------ | ------------- | --------------------------------------- |
-| `AUTO_UPDATE_ENABLED`              | Enables automatic updates for the server when a new version is available | `true`        | `false`/`true`                          |
-| `AUTO_UPDATE_CRON_EXPRESSION`      | The cron expression for checking new version                             | `0 0 * * *`   | See [Cron expression](#cron-expression) |
+| `AUTO_UPDATE_ENABLED`              | Enables automatic updates for the server when a new version is available | `false`       | `false`/`true`                          |
+| `AUTO_UPDATE_CRON_EXPRESSION`      | The cron expression for checking new version                             | `0 3 * * *`   | See [Cron expression](#cron-expression) |
 | `AUTO_UPDATE_WARN_MINUTES`         | The time in minutes to warn players before the server is updated         | `10`          | Integer                                 |
-| `AUTO_RESTART_ENABLED`             | Enables automatic restarts for the server                                | `true`        | `false`/`true`                          |
+| `AUTO_RESTART_ENABLED`             | Enables automatic restarts for the server                                | `false`       | `false`/`true`                          |
 | `AUTO_RESTART_WARN_MINUTES`        | The time in minutes to warn players before the server is restarted       | `10`          | Integer                                 |
-| `AUTO_RESTART_CRON_EXPRESSION`     | The cron expression for the automatic restart function                   | `0 0 * * *`   | See [Cron expression](#cron-expression) |
+| `AUTO_RESTART_CRON_EXPRESSION`     | The cron expression for the automatic restart function                   | `0 5 * * *`   | See [Cron expression](#cron-expression) |
 | `BACKUP_ENABLED`                   | Enables automatic backups for the server                                 | `true`        | `false`/`true`                          |
 | `BACKUP_CRON_EXPRESSION`           | The cron expression for the automatic backup function                    | `0 * * * *`   | See [Cron expression](#cron-expression) |
 | `BACKUP_AUTO_CLEAN`                | Enables automatic cleanup of old backups                                 | `true`        | `false`/`true`                          |
@@ -62,20 +68,14 @@ These settings control the special features of the server:
 | ---------------------- | -------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `MULTITHREAD_ENABLED`  | Sets options for "Improved multi-threaded CPU  "                           | `true`        | `false`/`true`                                                                                                                                           |
 | `COMMUNITY_SERVER`     | Set to enabled, the server will appear in the Community Server list        | `true`        | `false`/`true`                                                                                                                                           |
-| `SERVER_SETTINGS_MODE` | Whether settings (game and engine) are configured via env vars or via file | `auto`        | `auto`: Modified  by env vars, file will be overwwiten always<br>`manual`: Modified only by editing the file directly, environment variables are ignored |
+| `SERVER_SETTINGS_MODE` | Whether settings (game and engine) are configured via env vars or via file | `auto`        | `auto`: Modified  by env vars, file will be overwritten always<br>`manual`: Modified only by editing the file directly, environment variables are ignored |
 
 > [!IMPORTANT]
 >
 > Take special attention to `SERVER_SETTINGS_MODE`, if you want to change the server settings via environment variables use the default value (`auto`), otherwise change it to `manual` and edit the config file directly.
-> The RCON config file will be configured accordingle to the `SERVER_SETTINGS_MODE` value.
+> The RCON config file will be configured accordingly to the `SERVER_SETTINGS_MODE` value.
 > If you change the `SERVER_SETTINGS_MODE` to `manual`, it will grab the settings from the file and ignore the environment variables.
 > If you change the `SERVER_SETTINGS_MODE` to `auto`, it will grab the settings from the environment variables and ignore the file.
-
-
-Default values for the cron expressions:
- - Auto restarts: `0 0 * * *` (Every day at midnight)
- - Auto updates: `0 1 * * *` (Every day at midnight)
- - Auto backups: `0 * * * *` (Every hour)
 
 #### Cron expression
 
@@ -83,6 +83,10 @@ In a Cron-Expression, you define an interval for when to run jobs.
 Use the following format: `* * * * *` (Minute, Hour, Day of the month, Month, Day of the week).
 If you are not familiar with cron expressions, you can use a cron expression generator like [crontab-generator.org](https://crontab-generator.org).
 
+Default values for the cron expressions:
+ - Auto restarts: `0 5 * * *` (Every day at 5am)
+ - Auto updates: `0 3 * * *` (Every day at 3am)
+ - Auto backups: `0 * * * *` (Every hour)
 
 ### Engine Settings
 
@@ -95,19 +99,24 @@ If you are not familiar with cron expressions, you can use a cron expression gen
 This section lists all the settings currently adjustable via Docker environment variables, based on the **order** and **contents of the DefaultPalWorldSettings.ini**.
 Information sources and credits to the following websites:
 
-- [Palworld Tech Guide](https://tech.palworldgame.com/optimize-game-balance) for the game server documentation
-- [PalworldSettingGenerator](https://dysoncheng.github.io/PalWorldSettingGenerator/setting.html) for variable descriptions
+- [Palworld Official Tech Guide](https://tech.palworldgame.com/optimize-game-balance) for the game server documentation
+- [Palworld Setting Generator](https://dysoncheng.github.io/PalWorldSettingGenerator/setting.html) for variable descriptions
+- [Palworld Unofficial Wiki](https://palworld.wiki.gg/wiki/PalWorldSettings.ini) for variable descriptions
+- [Palworld Shockbyte Documentation](https://shockbyte.com/billing/knowledgebase/1189/How-to-Configure-your-Palworld-server.html) for variable descriptions
 
-> **Important:** Please note that all of this is subject to change. **The game is still in early access.**
->
+> [!IMPORTANT]
+> 
+> Please note that all of this is subject to change. **The game is still in early access.**
+> Check out the [official webpage for the supported parameters.](https://tech.palworldgame.com/optimize-game-balance)
+> 
 > To change a setting, you can set the environment variable to the value you want. If the environment variable is not set or is blank, the default value will be used.
 
 
 | Variable                                    | Game setting                         | Description                                                                                                                                                       | Default value                                               | Allowed value |
 | ------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------- |
 | `DIFFICULTY`                                | Difficulty                           | Choose one of the following:<br>`None`<br>`Normal`<br>`Difficult`                                                                                                 | `None`                                                      | Enum          |
-| `DAYTIME_SPEEDRATE`                         | DayTimeSpeedRate                     | Day time speed - Smaller number means shorter days                                                                                                                | `1.000000`                                                  | Float         |
-| `NIGHTTIME_SPEEDRATE`                       | NightTimeSpeedRate                   | Night time speed - Smaller number means shorter nights                                                                                                            | `1.000000`                                                  | Float         |
+| `DAYTIME_SPEEDRATE`                         | DayTimeSpeedRate                     | Day time speed - Smaller number means longer days                                                                                                                | `1.000000`                                                  | Float         |
+| `NIGHTTIME_SPEEDRATE`                       | NightTimeSpeedRate                   | Night time speed - Bigger number means shorter nights                                                                                                            | `1.000000`                                                  | Float         |
 | `EXP_RATE`                                  | ExpRate                              | EXP rate                                                                                                                                                          | `1.000000`                                                  | Float         |
 | `PAL_CAPTURE_RATE`                          | PalCaptureRate                       | Pal capture rate                                                                                                                                                  | `1.000000`                                                  | Float         |
 | `PAL_SPAWN_NUM_RATE`                        | PalSpawnNumRate                      | Pal appearance rate                                                                                                                                               | `1.000000`                                                  | Float         |
@@ -115,7 +124,7 @@ Information sources and credits to the following websites:
 | `PAL_DAMAGE_RATE_DEFENSE`                   | PalDamageRateDefense                 | Damage to pals multiplier                                                                                                                                         | `1.000000`                                                  | Float         |
 | `PLAYER_DAMAGE_RATE_ATTACK`                 | PlayerDamageRateAttack               | Damage from player multiplier                                                                                                                                     | `1.000000`                                                  | Float         |
 | `PLAYER_DAMAGE_RATE_DEFENSE`                | PlayerDamageRateDefense              | Damage to  player multiplier                                                                                                                                      | `1.000000`                                                  | Float         |
-| `PLAYER_STOMACH_DECREASE_RATE`              | PlayerStomachDecreaceRate            | Player hunger depletion rate                                                                                                                                      | `1.000000`                                                  | Float         |
+| `PLAYER_STOMACH_DECREACE_RATE`              | PlayerStomachDecreaceRate            | Player hunger depletion rate                                                                                                                                      | `1.000000`                                                  | Float         |
 | `PLAYER_STAMINA_DECREACE_RATE`              | PlayerStaminaDecreaceRate            | Player stamina reduction rate                                                                                                                                     | `1.000000`                                                  | Float         |
 | `PLAYER_AUTO_HP_REGENE_RATE`                | PlayerAutoHPRegeneRate               | Player auto HP regeneration rate                                                                                                                                  | `1.000000`                                                  | Float         |
 | `PLAYER_AUTO_HP_REGENE_RATE_IN_SLEEP`       | PlayerAutoHpRegeneRateInSleep        | Player sleep HP regeneration rate                                                                                                                                 | `1.000000`                                                  | Float         |
@@ -127,7 +136,7 @@ Information sources and credits to the following websites:
 | `BUILD_OBJECT_DETERIORATION_DAMAGE_RATE`    | BuildObjectDeteriorationDamageRate   | Structure deterioration rate                                                                                                                                      | `1.000000`                                                  | Float         |
 | `COLLECTION_DROP_RATE`                      | CollectionDropRate                   | Gatherable items multiplier                                                                                                                                       | `1.000000`                                                  | Float         |
 | `COLLECTION_OBJECT_HP_RATE`                 | CollectionObjectHpRate               | Gatherable objects HP multiplier                                                                                                                                  | `1.000000`                                                  | Float         |
-| `COLLECTION_OBJECT_RESPAWN_SPEED_RATE`      | CollectionObjectRespawnSpeedRate     | Gatherable objects respawn interval                                                                                                                               | `1.000000`                                                  | Float         |
+| `COLLECTION_OBJECT_RESPAWN_SPEED_RATE`      | CollectionObjectRespawnSpeedRate     | Gatherable objects respawn. Smaller means faster interval                                                                                                         | `1.000000`                                                  | Float         |
 | `ENEMY_DROP_ITEM_RATE`                      | EnemyDropItemRate                    | Dropped Items Multiplier                                                                                                                                          | `1.000000`                                                  | Float         |
 | `DEATH_PENALTY`                             | DeathPenalty                         | `None` : No lost<br> `Item` : Lost item without equipment<br>`ItemAndEquipment` : Lost item and equipment<br>`All`: Lost All item,   equipment, pal(in inventory) | `All`                                                       | Enum          |
 | `ENABLE_PLAYER_TO_PLAYER_DAMAGE`            | bEnablePlayerToPlayerDamage          | Allows players to cause damage to players                                                                                                                         | `false`                                                     | Boolean       |
