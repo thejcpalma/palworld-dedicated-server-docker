@@ -8,9 +8,15 @@ function rcon_broadcast_save_and_shutdown() {
     rconcli 'broadcast Saving-before-shutdown...'
     rconcli 'save'
     rconcli 'broadcast Saving-done'
-    rconcli 'broadcast Server-shutting-down...'
-    sleep 5
+
+    backupmanager create
+    
+    sleep 1
+    rconcli "broadcast Server-is-shutting-down-now!"
+    sleep 1
+    rconcli "shutdown 1"
 }
+
 # AUTO_RESTART_WARN_MINUTES or AUTO_UPDATE_WARN_MINUTES
 function rcon_broadcast_restart() {
     local restart_warn_minutes=${1}
