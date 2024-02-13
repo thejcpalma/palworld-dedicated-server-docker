@@ -48,7 +48,6 @@ do
     echo_info "> Server main thread started with pid ${killpid}"
     wait ${killpid}
 
-    send_stop_notification
 
     # Wait for backup jobs to finish
     mapfile -t backup_pids < <(pgrep backup)
