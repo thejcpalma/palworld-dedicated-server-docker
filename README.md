@@ -40,7 +40,7 @@ ___
 - [Let's Get Started!](#lets-get-started)
 - [Environment variables](#environment-variables)
 - [Docker-Compose](#docker-compose)
-- [Restart \& Update](#restart--update)
+- [Auto Restart and Auto Update](#auto-restart-and-auto-update)
 - [Backup Manager](#backup-manager)
 - [Run RCON commands](#run-rcon-commands)
 - [Webhook integration](#webhook-integration)
@@ -119,21 +119,25 @@ Enjoying the project? Give this repo and the [Docker-Hub repository](https://hub
 ## Environment variables
 
 Check out the [ENV_VARS.md](/docs/ENV_VARS.md) file for a detailed list of environment variables.
+This file contains a list of all the environment variables that can be used to customize your Palworld Dedicated Server.
 
 ## Docker-Compose
 
 Download/Copy the [docker-compose.yml](docker-compose.yml) and [default.env](default.env) files.
 
-## Restart & Update
+## Auto Restart and Auto Update
+
+> [!WARNING]
+>
+> **This features require RCON to be enabled**
+> If after restart/update, no players are online near the bases they might not render correctly, causing pals to bug out (be stacked on the palbox, stop gathering, etc...)
 
 You can use the auto restart and auto update feature by setting the `AUTO_RESTART_ENABLED` and `AUTO_RESTART_ENABLED` environment variables to `true`.
 Check out the [ENV_VARS.md](/docs/ENV_VARS.md#special-features) for a detailed list of the variables.
 
-
-> [!WARNING]
+> [!IMPORTANT]
 >
 > Manually restarting or updating the server won't show on the docker logs.
-> Will only work if RCON is enabled.
 >
 > Will use default warn time if not specified (update will always use `AUTO_UPDATE_WARN_MINUTES` )
 
@@ -209,14 +213,14 @@ $ docker exec palworld-dedicated-server backup_list
 ## Run RCON commands
 
 > [!NOTE]
-> Please research the RCON-Commands on the official source: https://tech.palworldgame.com/server-commands
+> Please research the RCON commands on the official source: https://tech.palworldgame.com/server-commands
 
 Usage: `docker exec palworld-dedicated-server rconcli [command]`
 Examples:
 
 ```shell
 $ docker exec palworld-dedicated-server rconcli ShowPlayers
-> RCON: player,playerid,steamid
+> RCON: name,playeruid,steamid
 thejcpalma,1234,5789
 ```
 
