@@ -40,8 +40,9 @@ ___
 - [Let's Get Started!](#lets-get-started)
 - [Environment variables](#environment-variables)
 - [Docker-Compose](#docker-compose)
-- [Run RCON commands](#run-rcon-commands)
+- [Restart \& Update](#restart--update)
 - [Backup Manager](#backup-manager)
+- [Run RCON commands](#run-rcon-commands)
 - [Webhook integration](#webhook-integration)
   - [Supported events](#supported-events)
 - [FAQ](#faq)
@@ -122,19 +123,45 @@ Check out the [ENV_VARS.md](/docs/ENV_VARS.md) file for a detailed list of envir
 
 Download/Copy the [docker-compose.yml](docker-compose.yml) and [default.env](default.env) files.
 
-## Run RCON commands
+## Restart & Update
 
-> [!NOTE]
-> Please research the RCON-Commands on the official source: https://tech.palworldgame.com/server-commands
+You can use the auto restart and auto update feature by setting the `AUTO_RESTART_ENABLED` and `AUTO_RESTART_ENABLED` environment variables to `true`.
+Check out the [ENV_VARS.md](/docs/ENV_VARS.md#special-features) for a detailed list of the variables.
 
-Usage: `docker exec palworld-dedicated-server rconcli [command]`
-Examples:
+
+> [!WARNING]
+>
+> Manually restarting or updating the server won't show on the docker logs.
+> Will only work if RCON is enabled.
+>
+> Will use default warn time if not specified (update will always use `AUTO_UPDATE_WARN_MINUTES` )
+
+You can also manually restart or update the server.
+Usage: `docker exec palworld-dedicated-server restart [warn_time]` or `docker exec palworld-dedicated-server update`
 
 ```shell
-$ docker exec palworld-dedicated-server rconcli ShowPlayers
-> RCON: player,playerid,steamid
-thejcpalma,1234,5789
+docker exec palworld-dedicated-server restart 1
+>> players online: 0
+> No players are online. Restarting the server now...
+> RCON: Broadcasted: Server-is-restarting-now!
+> RCON: Broadcasted: 00:06:15-Saving-in-5-seconds
+> RCON: Broadcasted: Saving-world...
+> RCON: Complete Save
+> RCON: Broadcasted: Saving-done
+> RCON: Broadcasted: Creating-backup
+> RCON: Broadcasted: Backup-done
+>>> Backup 'saved-20240213_000615.tar.gz' created successfully.
+> RCON: Broadcasted: Server-is-shutting-down-now!
+> RCON: The server will shut down in 1 seconds. Please prepare to exit the game.
 ```
+
+```shell
+docker exec palworld-dedicated-server update   
+> The server is up-to-date!
+```
+
+> **Restart and update features will always perform a backup before shutting down the server.**
+
 
 ## Backup Manager
 
@@ -176,6 +203,20 @@ $ docker exec palworld-dedicated-server backup_clean 3
 $ docker exec palworld-dedicated-server backup_list   
 > Listing 1 out of backup 2 file(s).
 2024-02-03 03:30:00 | saved-20240203_033000.tar.gz
+```
+
+## Run RCON commands
+
+> [!NOTE]
+> Please research the RCON-Commands on the official source: https://tech.palworldgame.com/server-commands
+
+Usage: `docker exec palworld-dedicated-server rconcli [command]`
+Examples:
+
+```shell
+$ docker exec palworld-dedicated-server rconcli ShowPlayers
+> RCON: player,playerid,steamid
+thejcpalma,1234,5789
 ```
 
 ## Webhook integration

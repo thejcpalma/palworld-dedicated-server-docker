@@ -13,7 +13,7 @@ function setup_crons() {
     fi
     # Auto restart cron job
     if [[ -n ${AUTO_RESTART_ENABLED} ]] && [[ ${AUTO_RESTART_ENABLED,,} == "true" ]]; then
-        echo "${AUTO_RESTART_CRON_EXPRESSION} restart ${AUTO_RESTART_WARN_TIME}" >> cronlist
+        echo "${AUTO_RESTART_CRON_EXPRESSION} restart ${AUTO_RESTART_WARN_MINUTES}" >> cronlist
     fi
 
     /usr/local/bin/supercronic -passthrough-logs cronlist &
