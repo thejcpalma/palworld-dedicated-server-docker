@@ -27,4 +27,4 @@ jobs:
         git config --local user.name "GitHub Actions"
         git add README.md
         git commit --amend --no-edit --author "$AUTHOR"
-        git push origin HEAD:main --force
+        git push origin HEAD:main
