@@ -17,41 +17,46 @@ function rcon_broadcast_restart() {
 
     # Check if restart_warn_minutes is not set or is not a valid integer
     if [[ -z "${restart_warn_minutes}" ]] || ! [[ "${restart_warn_minutes}" =~ ^[0-9]+$ ]]; then
-        echo "Error: restart_warn_minutes is not set or is not a valid integer"
+        echo_error ">>> 'restart_warn_minutes' is not set or is not a valid integer"
         return 1
     fi
 
-    rconcli "broadcast Server-will-restart-in-${restart_warn_minutes}-minute(s)"
+    if [[ restart_warn_minutes -gt 0 ]]; then
 
-    i="${restart_warn_minutes}"
-    while ((i > 1)); do
-        sleep "1m"
-        if ((i <= 5)) || ((i % 5 == 0)); then
-            rconcli "broadcast Server-will-reboot-in-${i}-minute(s)"
-        fi
-        ((i--))
-    done
+        rconcli "broadcast Server-will-restart-in-${restart_warn_minutes}-minute(s)"
 
-    i=59
-    while ((i > 0)); do
-        sleep "1s"
-        if ((i <= 5)) || ((i % 10 == 0)); then
-            rconcli "broadcast Server-will-restart-in-${i}-second(s)"
-        fi
-        ((i--))
-    done
+        i="${restart_warn_minutes}"
+        while ((i > 1)); do
+            sleep "1m"
+            if ((i <= 5)) || ((i % 5 == 0)); then
+                rconcli "broadcast Server-will-restart-in-${i}-minute(s)"
+            fi
+            ((i--))
+        done
 
-    rconcli "broadcast Server-is-shutting-down-now!"
-    rconcli save
-    sleep 1
+        i=59
+        while ((i > 0)); do
+            sleep "1s"
+            if ((i <= 10)) || ((i % 10 == 0)); then
+                rconcli "broadcast Server-will-restart-in-${i}-second(s)"
+            fi
+            ((i--))
+        done
+    else
+        rconcli "broadcast Server-is-restarting-now!"
+    fi
+
     backupmanager create
     sleep 1
+    rconcli "broadcast Server-is-shutting-down-now!"
 }
 
 function rcon_restart() {
     local restart_warn_minutes=${1}
 
-    if [ "$(rcon_get_player_count)" = "0" ]; then
+    echo_warning ">> players online: $(rcon_get_player_count)"
+
+    if [ "$(rcon_get_player_count)" -eq 0 ]; then
         echo_info "> No players are online. Restarting the server now..."
         rcon_broadcast_restart 0
     else

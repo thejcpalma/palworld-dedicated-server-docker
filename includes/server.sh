@@ -93,7 +93,7 @@ function restart_server() {
 
     if [ "${RCON_ENABLED,,}" = true ]; then
         if [[ -n "${warn_minutes}" ]] && [[ "${warn_minutes}" =~ ^[0-9]+$ ]]; then
-            send_start_notification "${warn_minutes}"
+            send_restart_notification "${warn_minutes}"
             rcon_restart "${warn_minutes}"
         else
             echo_error ">>> Unable to restart, warn_minutes is not a positive number: ${warn_minutes}"

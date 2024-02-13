@@ -8,11 +8,12 @@ Due to the extensive control options, the settings are split into categories:
 - [Container Settings](#container-settings)
   - [TZ identifiers](#tz-identifiers)
 - [Dedicated Server Settings](#dedicated-server-settings)
+  - [Special Features](#special-features)
+  - [Server Settings](#server-settings)
     - [Cron expression](#cron-expression)
   - [Engine Settings](#engine-settings)
   - [Palworld Game Settings](#palworld-game-settings)
 - [Webhook Settings](#webhook-settings)
-
 
 ## Container Settings
 
@@ -31,23 +32,37 @@ The `TZ` setting affects logging output and the backup function. [TZ identifiers
 
 ## Dedicated Server Settings
 
-These settings control the behavior of the dedicated server:
+These are the overall settings for the dedicated server.
 
-| Variable                           | Description                                                                | Default value | Allowed value                                                                                                                                            |
-| ---------------------------------- | -------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MULTITHREAD_ENABLED`              | Sets options for "Improved multi-threaded CPU  "                           | `true`        | `false`/`true`                                                                                                                                           |
-| `COMMUNITY_SERVER`                 | Set to enabled, the server will appear in the Community Server list        | `true`        | `false`/`true`                                                                                                                                           |
-| `SERVER_SETTINGS_MODE`             | Whether settings (game and engine) are configured via env vars or via file | `auto`        | `auto`: Modified  by env vars, file will be overwwiten always<br>`manual`: Modified only by editing the file directly, environment variables are ignored |
-| `AUTO_UPDATE_ENABLED`              | Enables automatic updates for the server when a new version is available   | `true`        | `false`/`true`                                                                                                                                           |
-| `AUTO_UPDATE_CRON_EXPRESSION`      | The cron expression for checking new version                               | `0 0 * * *`   | See [Cron expression](#cron-expression)                                                                                                                  |
-| `AUTO_UPDATE_WARN_MINUTES`         | The time in minutes to warn players before the server is updated           | `10`          | Integer                                                                                                                                                  |
-| `AUTO_RESTART_ENABLED`             | Enables automatic restarts for the server                                  | `true`        | `false`/`true`                                                                                                                                           |
-| `AUTO_RESTART_WARN_MINUTES`        | The time in minutes to warn players before the server is restarted         | `10`          | Integer                                                                                                                                                  |
-| `AUTO_RESTART_CRON_EXPRESSION`     | The cron expression for the automatic restart function                     | `0 0 * * *`   | See [Cron expression](#cron-expression)                                                                                                                  |
-| `BACKUP_ENABLED`                   | Enables automatic backups for the server                                   | `true`        | `false`/`true`                                                                                                                                           |
-| `BACKUP_CRON_EXPRESSION`           | The cron expression for the automatic backup function                      | `0 * * * *`   | See [Cron expression](#cron-expression)                                                                                                                  |
-| `BACKUP_AUTO_CLEAN`                | Enables automatic cleanup of old backups                                   | `true`        | `false`/`true`                                                                                                                                           |
-| `BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP` | The amount of backups to keep                                              | `72`          | Positive integer                                                                                                                                         |
+### Special Features
+
+These settings control the special features of the server:
+
+ - Auto updates:
+ - Auto restarts
+ - Auto backups
+
+| Variable                           | Description                                                              | Default value | Allowed value                           |
+| ---------------------------------- | ------------------------------------------------------------------------ | ------------- | --------------------------------------- |
+| `AUTO_UPDATE_ENABLED`              | Enables automatic updates for the server when a new version is available | `true`        | `false`/`true`                          |
+| `AUTO_UPDATE_CRON_EXPRESSION`      | The cron expression for checking new version                             | `0 0 * * *`   | See [Cron expression](#cron-expression) |
+| `AUTO_UPDATE_WARN_MINUTES`         | The time in minutes to warn players before the server is updated         | `10`          | Integer                                 |
+| `AUTO_RESTART_ENABLED`             | Enables automatic restarts for the server                                | `true`        | `false`/`true`                          |
+| `AUTO_RESTART_WARN_MINUTES`        | The time in minutes to warn players before the server is restarted       | `10`          | Integer                                 |
+| `AUTO_RESTART_CRON_EXPRESSION`     | The cron expression for the automatic restart function                   | `0 0 * * *`   | See [Cron expression](#cron-expression) |
+| `BACKUP_ENABLED`                   | Enables automatic backups for the server                                 | `true`        | `false`/`true`                          |
+| `BACKUP_CRON_EXPRESSION`           | The cron expression for the automatic backup function                    | `0 * * * *`   | See [Cron expression](#cron-expression) |
+| `BACKUP_AUTO_CLEAN`                | Enables automatic cleanup of old backups                                 | `true`        | `false`/`true`                          |
+| `BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP` | The amount of backups to keep                                            | `72`          | Positive integer                        |
+
+
+### Server Settings
+
+| Variable               | Description                                                                | Default value | Allowed value                                                                                                                                            |
+| ---------------------- | -------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MULTITHREAD_ENABLED`  | Sets options for "Improved multi-threaded CPU  "                           | `true`        | `false`/`true`                                                                                                                                           |
+| `COMMUNITY_SERVER`     | Set to enabled, the server will appear in the Community Server list        | `true`        | `false`/`true`                                                                                                                                           |
+| `SERVER_SETTINGS_MODE` | Whether settings (game and engine) are configured via env vars or via file | `auto`        | `auto`: Modified  by env vars, file will be overwwiten always<br>`manual`: Modified only by editing the file directly, environment variables are ignored |
 
 > [!IMPORTANT]
 >
