@@ -321,8 +321,8 @@ function setup_rcon_yaml () {
         if [[ "${SERVER_SETTINGS_MODE,,}" == "auto" ]]; then
             # Use environment variables
             echo_warning ">> Using environment variables to configure 'rcon.yaml' config file."
-            echo_info -n "> Admin Password: " && echo_base "$RCON_PORT"
-            echo_info -n "> RCON Port: " && echo_base "$rcon_port"
+            echo_info -n "> Admin Password: " && echo_base "$ADMIN_PASSWORD"
+            echo_info -n "> RCON Port: " && echo_base "$RCON_PORT"
             
             if [[ -n ${RCON_PORT+x} ]]; then
                 sed -i "s/###RCON_PORT###/$RCON_PORT/" "$RCON_CONFIG_FILE"
