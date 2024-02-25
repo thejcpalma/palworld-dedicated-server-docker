@@ -119,15 +119,16 @@ ENV DEBIAN_FRONTEND=noninteractive \
     WEBHOOK_ENABLED=false \
     WEBHOOK_URL= \
     # Webhook messages
-    WEBHOOK_START_TITLE=":white_check_mark: Server is starting" \
-    WEBHOOK_START_DESCRIPTION="The gameserver is starting" \
+    WEBHOOK_START_TITLE=":white_check_mark: Starting server" \
+    WEBHOOK_START_DESCRIPTION="Server is starting" \
     WEBHOOK_START_COLOR="65280" \
-    WEBHOOK_STOP_TITLE=":octagonal_sign: Server has been stopped" \
-    WEBHOOK_STOP_DESCRIPTION="The gameserver has been stopped" \
+    WEBHOOK_STOP_TITLE=":octagonal_sign: Stopped server" \
+    WEBHOOK_STOP_DESCRIPTION="Server has been stopped" \
     WEBHOOK_STOP_COLOR="16711680" \
-    WEBHOOK_RESTART_TITLE=":arrows_counterclockwise: Server is restarting" \
+    WEBHOOK_RESTART_TITLE=":arrows_counterclockwise: Restarting server" \
     # X_MINUTES will be replaced with parameter expansion
-    WEBHOOK_RESTART_DESCRIPTION="The gameserver is restarting in X_MINUTES minute(s) :alarm_clock:" \
+    WEBHOOK_RESTART_DESCRIPTION="Server is restarting in X_MINUTES minute(s) :alarm_clock:" \
+    WEBHOOK_RESTART_NOW_DESCRIPTION="Server is restarting now! :alarm_clock:" \
     WEBHOOK_RESTART_COLOR="16750848" \
     WEBHOOK_INSTALL_TITLE=":new: Installing server" \
     WEBHOOK_INSTALL_DESCRIPTION="Server is being installed" \
