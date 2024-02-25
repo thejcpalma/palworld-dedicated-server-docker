@@ -1,4 +1,7 @@
 # shellcheck disable=SC2148
+# shellcheck source=/dev/null
+
+source "${SERVER_DIR}"/scripts/webhook/aliases.sh
 
 # Aliases to run RCON commands
 
@@ -63,6 +66,7 @@ function rcon_broadcast_restart() {
     if [[ restart_warn_minutes -gt 0 ]]; then
 
         rconcli "broadcast Server will restart in ${restart_warn_minutes} minute(s)"
+        send_restart_notification "${restart_warn_minutes}"
 
         i="${restart_warn_minutes}"
         while ((i > 1)); do
@@ -88,6 +92,7 @@ function rcon_broadcast_restart() {
     backup_manager create
     sleep 1
     rconcli "broadcast Server is shutting down now!"
+    send_restart_notification 0
 }
 
 function rcon_restart() {
@@ -101,9 +106,11 @@ function rcon_restart() {
     players_online=$(rcon_get_player_count)
     if [ "${players_online}" -eq 0 ]; then
         log_info "> No players are online. Restarting the server now..."
+        
         rcon_broadcast_restart 0
     else
         log_info "> There are ${players_online} players online. Restarting the server in ${restart_warn_minutes} minute(s)..."
+
         rcon_broadcast_restart "${restart_warn_minutes}"
     fi
     

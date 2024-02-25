@@ -3,7 +3,6 @@
 
 source "${SERVER_DIR}"/scripts/utils/logs.sh
 source "${SERVER_DIR}"/scripts/rcon/aliases.sh
-source "${SERVER_DIR}"/scripts/webhook/aliases.sh
 
 # The difference between stop_server and restart_server is that stop server 
 # will always be called on the SIGTERM signal sent by docker stop/restart command
@@ -43,7 +42,6 @@ function restart_server() {
             log_warning ">> Restarting server in ${warn_minutes} minutes..."
         fi
 
-        send_restart_notification "${warn_minutes}"
         rcon_restart "${warn_minutes}"
 
     else
