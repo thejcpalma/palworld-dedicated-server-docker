@@ -118,24 +118,34 @@ ENV DEBIAN_FRONTEND=noninteractive \
     # Webhook settings
     WEBHOOK_ENABLED=false \
     WEBHOOK_URL= \
-    WEBHOOK_START_TITLE="Server is starting" \
+    # Webhook messages
+    WEBHOOK_START_TITLE=":white_check_mark: Server is starting" \
     WEBHOOK_START_DESCRIPTION="The gameserver is starting" \
     WEBHOOK_START_COLOR="65280" \
-    WEBHOOK_STOP_TITLE="Server has been stopped" \
+    WEBHOOK_STOP_TITLE=":octagonal_sign: Server has been stopped" \
     WEBHOOK_STOP_DESCRIPTION="The gameserver has been stopped" \
     WEBHOOK_STOP_COLOR="16711680" \
-    WEBHOOK_RESTART_TITLE="Server is restarting" \
-    WEBHOOK_RESTART_DESCRIPTION="The gameserver is restarting in " \
+    WEBHOOK_RESTART_TITLE=":arrows_counterclockwise: Server is restarting" \
+    # X_MINUTES will be replaced with parameter expansion
+    WEBHOOK_RESTART_DESCRIPTION="The gameserver is restarting in X_MINUTES minute(s) :alarm_clock:" \
     WEBHOOK_RESTART_COLOR="16750848" \
-    WEBHOOK_INSTALL_TITLE="Server is being installed" \
+    WEBHOOK_INSTALL_TITLE=":new: Installing server" \
     WEBHOOK_INSTALL_DESCRIPTION="Server is being installed" \
     WEBHOOK_INSTALL_COLOR="1644912" \
-    WEBHOOK_UPDATE_TITLE="Updating server" \
+    WEBHOOK_UPDATE_TITLE=":new: Updating server" \
     WEBHOOK_UPDATE_DESCRIPTION="Server is being updated" \
     WEBHOOK_UPDATE_COLOR="16776960" \
-    WEBHOOK_UPDATE_VALIDATE_TITLE="Updating and validating server" \
+    WEBHOOK_UPDATE_VALIDATE_TITLE=":ballot_box_with_check: Updating and validating server" \
     WEBHOOK_UPDATE_VALIDATE_DESCRIPTION="Server is being updated and validated" \
     WEBHOOK_UPDATE_VALIDATE_COLOR="16776960" \
+    WEBHOOK_PLAYER_JOIN_TITLE=":mage: Player Joined" \
+    # PLAYER_NAME will be replaced with parameter expansion
+    WEBHOOK_PLAYER_JOIN_DESCRIPTION="**PLAYER_NAME**" \
+    WEBHOOK_PLAYER_JOIN_COLOR="1728512" \
+    WEBHOOK_PLAYER_LEAVE_TITLE=":dash: Player Left" \
+    # PLAYER_NAME will be replaced with parameter expansion
+    WEBHOOK_PLAYER_LEAVE_DESCRIPTION="**PLAYER_NAME**" \
+    WEBHOOK_PLAYER_LEAVE_COLOR="6291482" \
     # Gameserver start settings
     MULTITHREAD_ENABLED=true \
     COMMUNITY_SERVER=true \
