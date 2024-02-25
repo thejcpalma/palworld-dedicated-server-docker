@@ -40,7 +40,9 @@ ___
 - [Let's Get Started!](#lets-get-started)
 - [Environment variables](#environment-variables)
 - [Docker-Compose](#docker-compose)
-- [Auto Restart and Auto Update](#auto-restart-and-auto-update)
+- [Special Features](#special-features)
+  - [\[Auto\] Restart and \[Auto\] Update](#auto-restart-and-auto-update)
+  - [Player Monitoring](#player-monitoring)
 - [Backup Manager](#backup-manager)
 - [Run RCON commands](#run-rcon-commands)
 - [Webhook integration](#webhook-integration)
@@ -125,24 +127,33 @@ This file contains a list of all the environment variables that can be used to c
 
 Download/Copy the [docker-compose.yml](docker-compose.yml) and [default.env](default.env) files.
 
-## Auto Restart and Auto Update
+## Special Features
 
 > [!WARNING]
->
-> **This features require RCON to be enabled**
-> If after restart/update, no players are online near the bases they might not render correctly, causing pals to bug out (be stacked on the palbox, stop gathering, etc...)
+> 
+> **This features require `RCON` to be enabled**
 
-You can use the auto restart and auto update feature by setting the `AUTO_RESTART_ENABLED` and `AUTO_RESTART_ENABLED` environment variables to `true`.
-Check out the [ENV_VARS.md](/docs/ENV_VARS.md#special-features) for a detailed list of the variables.
+Check out the [ENV_VARS.md](/docs/ENV_VARS.md#special-features) for a detailed list of the variables regarding these features.
+
+### \[Auto\] Restart and \[Auto\] Update
+
+You can use the \[auto\] restart and \[auto\] update feature by setting the `AUTO_RESTART_ENABLED` and `AUTO_RESTART_ENABLED` environment variables to `true`.
+
+These features will also need these settings to be set on the `docker-compose.yml` file:
+-  `stop_grace_period` to be around 30 seconds or more (depends on your server's performance) to allow the server to save and shut down gracefully.
+-  `restart_policy` to be `unless-stopped` to allow the server to restart after we stop the server inside the container.
 
 > [!IMPORTANT]
 >
 > Manually restarting or updating the server won't show on the docker logs.
 >
-> Will use default warn time if not specified (update will always use `AUTO_UPDATE_WARN_MINUTES` )
+> Will use default warn time if not specified (restart - `AUTO_RESTART_WARN_MINUTES`; update - `AUTO_UPDATE_WARN_MINUTES`)
+> 
+> If after restart/update, no players are online near the bases they might not render correctly, causing pals to bug out (be stacked on the palbox, stop gathering, etc...
 
 You can also manually restart or update the server.
-Usage: `docker exec palworld-dedicated-server restart [warn_time]` or `docker exec palworld-dedicated-server update`
+
+Usage: `docker exec palworld-dedicated-server restart [warn_time]` or `docker exec palworld-dedicated-server update [warn_time]`
 
 ```shell
 docker exec palworld-dedicated-server restart 1
@@ -167,6 +178,17 @@ docker exec palworld-dedicated-server update
 
 > **Restart and update features will always perform a backup before shutting down the server.**
 
+### Player Monitoring
+
+You can enable player monitoring by setting the `PLAYER_MONITORING_ENABLED` environment variable to `true`.
+
+This feature will also need the `PLAYER_MONITORING_INTERVAL` environment variable to be set to the desired interval in seconds.
+
+Events monitored:
+ - Player joined
+ - Player left
+
+Player events are logged in the container logs and sent to the webhook if enabled.
 
 ## Backup Manager
 
