@@ -14,6 +14,16 @@ Due to the extensive control options, the settings are split into categories:
   - [Engine Settings](#engine-settings)
   - [Palworld Game Settings](#palworld-game-settings)
 - [Webhook Settings](#webhook-settings)
+  - [Webhook Configuration](#webhook-configuration)
+  - [Webhook Messages](#webhook-messages)
+    - [**• Start server message**](#-start-server-message)
+    - [**• Stop server message**](#-stop-server-message)
+    - [**• Restart server message**](#-restart-server-message)
+    - [**• Install server message**](#-install-server-message)
+    - [**• Update server message**](#-update-server-message)
+    - [**• Update and validation server message**](#-update-and-validation-server-message)
+    - [**• Player join message**](#-player-join-message)
+    - [**• Player leave message**](#-player-leave-message)
 
 ## Container Settings
 
@@ -38,36 +48,38 @@ These are the overall settings for the dedicated server.
 
 ### Special Features
 
+> [!IMPORTANT]
+>
+> **RCON** should be enabled for all for them to work as expected.
+
 These settings control the special features of the server:
 
  - Auto updates:
  - Auto restarts
  - Auto backups
 
-> [!IMPORTANT]
->
-> **RCON** should be enabled for all for them to work as expected.
-
-| Variable                           | Description                                                              | Default value | Allowed value                           |
-| ---------------------------------- | ------------------------------------------------------------------------ | ------------- | --------------------------------------- |
-| `AUTO_UPDATE_ENABLED`              | Enables automatic updates for the server when a new version is available | `false`       | `false`/`true`                          |
-| `AUTO_UPDATE_CRON_EXPRESSION`      | The cron expression for checking new version                             | `0 3 * * *`   | See [Cron expression](#cron-expression) |
-| `AUTO_UPDATE_WARN_MINUTES`         | The time in minutes to warn players before the server is updated         | `10`          | Integer                                 |
-| `AUTO_RESTART_ENABLED`             | Enables automatic restarts for the server                                | `false`       | `false`/`true`                          |
-| `AUTO_RESTART_WARN_MINUTES`        | The time in minutes to warn players before the server is restarted       | `10`          | Integer                                 |
-| `AUTO_RESTART_CRON_EXPRESSION`     | The cron expression for the automatic restart function                   | `0 5 * * *`   | See [Cron expression](#cron-expression) |
-| `BACKUP_ENABLED`                   | Enables automatic backups for the server                                 | `true`        | `false`/`true`                          |
-| `BACKUP_CRON_EXPRESSION`           | The cron expression for the automatic backup function                    | `0 * * * *`   | See [Cron expression](#cron-expression) |
-| `BACKUP_AUTO_CLEAN`                | Enables automatic cleanup of old backups                                 | `true`        | `false`/`true`                          |
-| `BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP` | The amount of backups to keep                                            | `72`          | Positive integer                        |
+| Variable                           | Description                                                                                             | Default value | Allowed value                           |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------- | --------------------------------------- |
+| `AUTO_UPDATE_ENABLED`              | Enables automatic updates for the server when a new version is available                                | `false`       | `false`/`true`                          |
+| `AUTO_UPDATE_CRON_EXPRESSION`      | The cron expression for checking new version                                                            | `0 3 * * *`   | See [Cron expression](#cron-expression) |
+| `AUTO_UPDATE_WARN_MINUTES`         | The time in minutes to warn players before the server is updated                                        | `10`          | Integer                                 |
+| `AUTO_RESTART_ENABLED`             | Enables automatic restarts for the server                                                               | `false`       | `false`/`true`                          |
+| `AUTO_RESTART_WARN_MINUTES`        | The time in minutes to warn players before the server is restarted                                      | `10`          | Integer                                 |
+| `AUTO_RESTART_CRON_EXPRESSION`     | The cron expression for the automatic restart function                                                  | `0 5 * * *`   | See [Cron expression](#cron-expression) |
+| `BACKUP_ENABLED`                   | Enables automatic backups for the server                                                                | `true`        | `false`/`true`                          |
+| `BACKUP_CRON_EXPRESSION`           | The cron expression for the automatic backup function                                                   | `0 * * * *`   | See [Cron expression](#cron-expression) |
+| `BACKUP_AUTO_CLEAN`                | Enables automatic cleanup of old backups                                                                | `true`        | `false`/`true`                          |
+| `BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP` | The amount of backups to keep                                                                           | `72`          | Integer                                 |
+| `PLAYER_MONITOR_ENABLED`           | Enables player monitoring for the server                                                                | `false`       | `false`/`true`                          |
+| `PLAYER_MONITOR_INTERVAL`          | The interval in seconds for the player monitoring  (lower values means more impact on system resources) | `60`          | Positive integer                        |
 
 
 ### Server Settings
 
-| Variable               | Description                                                                | Default value | Allowed value                                                                                                                                            |
-| ---------------------- | -------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MULTITHREAD_ENABLED`  | Sets options for "Improved multi-threaded CPU  "                           | `true`        | `false`/`true`                                                                                                                                           |
-| `COMMUNITY_SERVER`     | Set to enabled, the server will appear in the Community Server list        | `true`        | `false`/`true`                                                                                                                                           |
+| Variable               | Description                                                                | Default value | Allowed value                                                                                                                                             |
+| ---------------------- | -------------------------------------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MULTITHREAD_ENABLED`  | Sets options for "Improved multi-threaded CPU  "                           | `true`        | `false`/`true`                                                                                                                                            |
+| `COMMUNITY_SERVER`     | Set to enabled, the server will appear in the Community Server list        | `true`        | `false`/`true`                                                                                                                                            |
 | `SERVER_SETTINGS_MODE` | Whether settings (game and engine) are configured via env vars or via file | `auto`        | `auto`: Modified  by env vars, file will be overwritten always<br>`manual`: Modified only by editing the file directly, environment variables are ignored |
 
 > [!IMPORTANT]
@@ -115,8 +127,8 @@ Information sources and credits to the following websites:
 | Variable                                    | Game setting                         | Description                                                                                                                                                       | Default value                                               | Allowed value |
 | ------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------- |
 | `DIFFICULTY`                                | Difficulty                           | Choose one of the following:<br>`None`<br>`Normal`<br>`Difficult`                                                                                                 | `None`                                                      | Enum          |
-| `DAYTIME_SPEEDRATE`                         | DayTimeSpeedRate                     | Day time speed - Smaller number means longer days                                                                                                                | `1.000000`                                                  | Float         |
-| `NIGHTTIME_SPEEDRATE`                       | NightTimeSpeedRate                   | Night time speed - Bigger number means shorter nights                                                                                                            | `1.000000`                                                  | Float         |
+| `DAYTIME_SPEEDRATE`                         | DayTimeSpeedRate                     | Day time speed - Smaller number means longer days                                                                                                                 | `1.000000`                                                  | Float         |
+| `NIGHTTIME_SPEEDRATE`                       | NightTimeSpeedRate                   | Night time speed - Bigger number means shorter nights                                                                                                             | `1.000000`                                                  | Float         |
 | `EXP_RATE`                                  | ExpRate                              | EXP rate                                                                                                                                                          | `1.000000`                                                  | Float         |
 | `PAL_CAPTURE_RATE`                          | PalCaptureRate                       | Pal capture rate                                                                                                                                                  | `1.000000`                                                  | Float         |
 | `PAL_SPAWN_NUM_RATE`                        | PalSpawnNumRate                      | Pal appearance rate                                                                                                                                               | `1.000000`                                                  | Float         |
@@ -182,30 +194,125 @@ Information sources and credits to the following websites:
 
 This section lists all the settings for the webhooks.
 
+### Webhook Configuration
+
+The following environment variables are used to configure the webhook:
+
+| Variable          | Description                          | Default Value              | Allowed Values    |
+| ----------------- | ------------------------------------ | -------------------------- | ----------------- |
+| `WEBHOOK_ENABLED` | Determines if the webhook is enabled | `false`                    | false/true        |
+| `WEBHOOK_URL`     | The URL for the webhook              | `YOUR-WEBHOOK-URL-IN-HERE` | Valid webhook URL |
+
+
+### Webhook Messages
+
 > [!WARNING]
 > 
 > Please note that Hex-Colors (Example #eeeeee) are not supported. Instead, use the Decimal representation of the color.
 > To convert a Hex-Color to its Decimal representation, you can use online tools such as [SpyColor](https://www.spycolor.com/).
 > Search for the Hex-Color and use the Decimal representation of that color. Using Hex-Colors will cause errors!
 
-| Variable                              | Description                                           | Default Value                           | Allowed Values    |
-| ------------------------------------- | ----------------------------------------------------- | --------------------------------------- | ----------------- |
-| `WEBHOOK_ENABLED`                     | Determines if the webhook is enabled                  | `false`                                 | false/true        |
-| `WEBHOOK_URL`                         | The URL for the webhook                               | `YOUR-URL-IN-HERE`                      | Valid webhook URL |
-| `WEBHOOK_START_TITLE`                 | The title for the start webhook                       | `Server is starting`                    | Message           |
-| `WEBHOOK_START_DESCRIPTION`           | The description for the start webhook                 | `The gameserver is starting`            | Message           |
-| `WEBHOOK_START_COLOR`                 | The color for the start webhook                       | `2328576`                               | Color (see below) |
-| `WEBHOOK_STOP_TITLE`                  | The title for the stop webhook                        | `Server has been stopped`               | Message           |
-| `WEBHOOK_STOP_DESCRIPTION`            | The description for the stop webhook                  | `The gameserver has been stopped`       | Message           |
-| `WEBHOOK_STOP_COLOR`                  | The color for the stop webhook                        | `7413016"`                              | Color (see below) |
-| `WEBHOOK_INFO_TITLE`                  | The title for the info webhook                        | `Info"`                                 | Message           |
-| `WEBHOOK_INFO_DESCRIPTION`            | The description for the info webhook                  | `This is an info from the server`       | Message           |
-| `WEBHOOK_INFO_COLOR`                  | The color for the info webhook                        | `2849520`                               | Color (see below) |
-| `WEBHOOK_UPDATE_TITLE`                | The title for the update webhook                      | `Updating server`                       | Message           |
-| `WEBHOOK_UPDATE_DESCRIPTION`          | The description for the update webhook                | `Server is being updated`               | Message           |
-| `WEBHOOK_UPDATE_COLOR`                | The color for the update webhook                      | `2849520`                               | Color (see below) |
-| `WEBHOOK_UPDATE_VALIDATE_TITLE`       | The title for the update and validation webhook       | `Updating and validating server`        | Message           |
-| `WEBHOOK_UPDATE_VALIDATE_DESCRIPTION` | The description for the update and validation webhook | `Server is being updated and validated` | Message           |
-| `WEBHOOK_UPDATE_VALIDATE_COLOR`       | The color for the update and validation webhook       | `2849520`                               | Color (see below) |
+Each webhook message is customizable through environment variables.
+Each message consists of a title, description, and color:
+ - The title is the main heading of the message
+ - The description provides additional information
+ - The color is a visual indicator.
+
+Colors are represented in their decimal form.
+
+> [!NOTE]
+>
+> Emojis in Discord Webhooks:
+>
+> Discord webhooks support both default emojis and custom emojis.
+>
+> Default emojis are available on all servers. You can use them directly in your messages.
+> 
+> Custom emojis are specific to the server they were added on. To use a custom emoji in a webhook message, it must exist on the server that the webhook is linked to.
+> 
+> Remember to use the correct syntax for each type of emoji
+> 
+> Use [this guide](https://docs.formie.pro/how-to-find-emoji-ids) to find the correct ID for the emoji you want to use.
+
+Below are the environment variables for each type of webhook message:
+
+#### **• Start server message** 
+
+| Variable                    | Description                           | Default Value                        |
+| --------------------------- | ------------------------------------- | ------------------------------------ |
+| `WEBHOOK_START_TITLE`       | The title for the start message       | `:white_check_mark: Starting server` |
+| `WEBHOOK_START_DESCRIPTION` | The description for the start message | `Server is starting`                 |
+| `WEBHOOK_START_COLOR`       | The color for the start message       | `65280`                              |
+
+
+#### **• Stop server message** 
+
+| Variable                   | Description                          | Default Value                     |
+| -------------------------- | ------------------------------------ | --------------------------------- |
+| `WEBHOOK_STOP_TITLE`       | The title for the stop message       | `:octagonal_sign: Stopped server` |
+| `WEBHOOK_STOP_DESCRIPTION` | The description for the stop message | `Server has been stopped`         |
+| `WEBHOOK_STOP_COLOR`       | The color for the stop message       | `16711680`                        |
+
+
+#### **• Restart server message**
+
+> [!NOTE]
+>
+> `X_MINUTES` will be replaced with the minutes passed to the restart function (`AUTO_RESTART_WARN_MINUTES` for the auto restart feature)
+
+| Variable                      | Description                             | Default Value                                               |
+| ----------------------------- | --------------------------------------- | ----------------------------------------------------------- |
+| `WEBHOOK_RESTART_TITLE`       | The title for the restart message       | `:arrows_counterclockwise: Restarting server`               |
+| `WEBHOOK_RESTART_DESCRIPTION` | The description for the restart message | `Server is restarting in X_MINUTES minute(s) :alarm_clock:` |
+| `WEBHOOK_RESTART_COLOR`       | The color for the restart message       | `16750848`                                                  |
+
+#### **• Install server message**
+
+| Variable                      | Description                             | Default Value               |
+| ----------------------------- | --------------------------------------- | --------------------------- |
+| `WEBHOOK_INSTALL_TITLE`       | The title for the install message       | `:tools: Installing server` |
+| `WEBHOOK_INSTALL_DESCRIPTION` | The description for the install message | `Server is being installed` |
+| `WEBHOOK_INSTALL_COLOR`       | The color for the install message       | `1644912`                   |
+
+#### **• Update server message** 
+
+| Variable                     | Description                            | Default Value             |
+| ---------------------------- | -------------------------------------- | ------------------------- |
+| `WEBHOOK_UPDATE_TITLE`       | The title for the update message       | `:new: Updating server`   |
+| `WEBHOOK_UPDATE_DESCRIPTION` | The description for the update message | `Server is being updated` |
+| `WEBHOOK_UPDATE_COLOR`       | The color for the update message       | `16776960`                |
+
+#### **• Update and validation server message**
+
+| Variable                              | Description                                           | Default Value                                            |
+| ------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| `WEBHOOK_UPDATE_VALIDATE_TITLE`       | The title for the update and validation message       | `:ballot_box_with_check: Updating and validating server` |
+| `WEBHOOK_UPDATE_VALIDATE_DESCRIPTION` | The description for the update and validation message | `Server is being updated and validated`                  |
+| `WEBHOOK_UPDATE_VALIDATE_COLOR`       | The color for the update and validation message       | `16776960`                                               |
+
+#### **• Player join message**
+
+> [!NOTE]
+>
+> `**PLAYER_NAME**` will be replaced with the name of the player that joined the server.
+
+| Variable                          | Description                          | Default Value          |
+| --------------------------------- | ------------------------------------ | ---------------------- |
+| `WEBHOOK_PLAYER_JOIN_TITLE`       | The title for the join message       | `:mage: Player Joined` |
+| `WEBHOOK_PLAYER_JOIN_DESCRIPTION` | The description for the join message | `**PLAYER_NAME**`      |
+| `WEBHOOK_PLAYER_JOIN_COLOR`       | The color for the join message       | `1728512`              |
+
+#### **• Player leave message**
+
+> [!NOTE]
+>
+> `**PLAYER_NAME**` will be replaced with the name of the player that left the server.
+
+| Variable                           | Description                           | Default Value        |
+| ---------------------------------- | ------------------------------------- | -------------------- |
+| `WEBHOOK_PLAYER_LEAVE_TITLE`       | The title for the leave message       | `:dash: Player Left` |
+| `WEBHOOK_PLAYER_LEAVE_DESCRIPTION` | The description for the leave message | `**PLAYER_NAME**`    |
+| `WEBHOOK_PLAYER_LEAVE_COLOR`       | The color for the leave message       | `6291482`            |
+
 
 [Back to main](../README.md#environment-variables)
