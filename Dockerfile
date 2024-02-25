@@ -1,3 +1,45 @@
+# Description: Dockerfile for Palworld Dedicated Server
+
+# Build the rcon binary
+FROM golang:1.22.0-bookworm as rcon-build
+
+WORKDIR /build
+
+ENV CGO_ENABLED=0 \
+    GORCON_RCONCLI_URL=https://github.com/gorcon/rcon-cli/archive/refs/tags/v0.10.3.tar.gz \
+    GORCON_RCONCLI_DIR=rcon-cli-0.10.3 \
+    GORCON_RCONCLI_TGZ=v0.10.3.tar.gz \
+    GORCON_RCONCLI_TGZ_SHA1SUM=33ee8077e66bea6ee097db4d9c923b5ed390d583
+
+RUN curl -fsSLO "$GORCON_RCONCLI_URL" \
+ && echo "${GORCON_RCONCLI_TGZ_SHA1SUM}  ${GORCON_RCONCLI_TGZ}" | sha1sum -c - \
+ && tar -xzf "$GORCON_RCONCLI_TGZ" \
+ && mv "$GORCON_RCONCLI_DIR"/* ./ \
+ && rm "$GORCON_RCONCLI_TGZ" \
+ && rm -Rf "$GORCON_RCONCLI_DIR" \
+ && go build -v ./cmd/gorcon
+
+# Build the supercronic binary
+FROM debian:bookworm-slim as supercronic-build
+
+# Latest releases available at https://github.com/aptible/supercronic/releases
+ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.2.29/supercronic-linux-amd64 \
+    SUPERCRONIC=supercronic-linux-amd64 \
+    SUPERCRONIC_SHA1SUM=cd48d45c4b10f3f0bfdd3a57d054cd05ac96812b
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends --no-install-suggests ca-certificates curl \
+ && apt-get autoremove -y --purge \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN curl -fsSLO "$SUPERCRONIC_URL" \
+ && echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - \
+ && chmod +x "$SUPERCRONIC" \
+ && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
+ && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
+
+# Build the final image
 FROM --platform=linux/amd64 cm2network/steamcmd:root
 
 LABEL maintainer="João Palma"
@@ -10,62 +52,41 @@ LABEL org.opencontainers.image.source="https://github.com/thejcpalma/palworld-de
 
 # Install minimum required packages for dedicated server
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends --no-install-suggests procps xdg-user-dirs \
-    && apt-get clean \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ && apt-get install -y --no-install-recommends --no-install-suggests procps xdg-user-dirs \
+ && apt-get autoremove -y --purge \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Latest releases available at https://github.com/aptible/supercronic/releases
-ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.2.29/supercronic-linux-amd64 \
-    SUPERCRONIC=supercronic-linux-amd64 \
-    SUPERCRONIC_SHA1SUM=cd48d45c4b10f3f0bfdd3a57d054cd05ac96812b
+# Copy the rcon and supercronic binaries
+COPY --from=rcon-build        --chmod=755  /build/gorcon               /usr/local/bin/rcon
+COPY --from=supercronic-build --chmod=755  /usr/local/bin/supercronic  /usr/local/bin/supercronic
 
-RUN curl -fsSLO "$SUPERCRONIC_URL" \
-    && echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - \
-    && chmod +x "$SUPERCRONIC" \
-    && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
-    && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
-
-# Latest releases available at https://github.com/gorcon/rcon-cli/releases
-ENV RCON_URL=https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz \
-    RCON_TGZ=rcon-0.10.3-amd64_linux.tar.gz \
-    RCON_TGZ_MD5SUM=8601c70dcab2f90cd842c127f700e398 \
-    RCON_BINARY=rcon
-
-RUN curl -fsSLO "$RCON_URL" \
-    && echo "${RCON_TGZ_MD5SUM} ${RCON_TGZ}" | md5sum -c - \
-    && tar xfz rcon-0.10.3-amd64_linux.tar.gz \
-    && chmod +x "rcon-0.10.3-amd64_linux/$RCON_BINARY" \
-    && mv "rcon-0.10.3-amd64_linux/$RCON_BINARY" "/usr/local/bin/${RCON_BINARY}" \
-    && rm -Rf rcon-0.10.3-amd64_linux rcon-0.10.3-amd64_linux.tar.gz
-
-
-# Define an environment variable for the server directory
+ENV APP_ID=2394010
 ENV SERVER_DIR=/home/steam/server
 
-# Use the environment variable in the rest of the Dockerfile
-COPY --chown=steam:steam --chmod=755 scripts/ ${SERVER_DIR}/scripts
-COPY --chown=steam:steam --chmod=755 includes/ ${SERVER_DIR}/includes
-COPY --chown=steam:steam --chmod=755 configs/ ${SERVER_DIR}/configs
-COPY --chown=steam:steam --chmod=755 entrypoint.sh ${SERVER_DIR}/
+COPY --chown=steam:steam --chmod=755 scripts/       ${SERVER_DIR}/scripts
+COPY --chown=steam:steam --chmod=755 entrypoint.sh  ${SERVER_DIR}/
+# Copy custom rcon broadcast to fix spaces in the message
+COPY --chmod=755 bin/rcon_broadcast /usr/local/bin/rcon_broadcast
 
-RUN ln -s ${SERVER_DIR}/scripts/backupmanager.sh /usr/local/bin/backupmanager \
-    && ln -s ${SERVER_DIR}/scripts/update.sh /usr/local/bin/update \
-    && ln -s ${SERVER_DIR}/scripts/wrappers/backupmanager_cli.sh /usr/local/bin/backup \
-    && ln -s ${SERVER_DIR}/scripts/wrappers/rconcli.sh /usr/local/bin/rconcli \
-    && ln -s ${SERVER_DIR}/scripts/wrappers/restart.sh /usr/local/bin/restart 
+RUN ln -s ${SERVER_DIR}/scripts/backup_manager.sh               /usr/local/bin/backup_manager \
+ && ln -s ${SERVER_DIR}/scripts/rcon/rconcli.sh                 /usr/local/bin/rconcli \
+ && ln -s ${SERVER_DIR}/scripts/wrappers/backup_manager_cli.sh  /usr/local/bin/backup \
+ && ln -s ${SERVER_DIR}/scripts/wrappers/update.sh              /usr/local/bin/update \
+ && ln -s ${SERVER_DIR}/scripts/wrappers/restart.sh             /usr/local/bin/restart 
 
 
 # Set the default shell to Bash with the 'pipefail' option enabled.
-# This changes the pipeline's return status to be the value of the last command to exit with a non-zero status, or zero if all commands exit successfully.
+# This changes the pipeline's return status to be the value of the last command
+# to exit with a non-zero status, or zero if all commands exit successfully.
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    # Container-setttings
+    # Container setttings
     PUID=1000 \
     PGID=1000 \
     TZ="Europe/Berlin" \
-    # Path-vars
+    # Path vars
     GAME_ROOT="/palworld" \
     GAME_PATH="/palworld/Pal" \
     GAME_SAVE_PATH="/palworld/Pal/Saved" \
@@ -75,23 +96,26 @@ ENV DEBIAN_FRONTEND=noninteractive \
     BACKUP_PATH="/palworld/backups" \
     STEAMCMD_PATH="/home/steam/steamcmd" \
     RCON_CONFIG_FILE="/home/steam/server/configs/rcon.yaml" \
-    # SteamCMD-settings
+    # SteamCMD settings
     ALWAYS_UPDATE_ON_START=true \
     STEAMCMD_VALIDATE_FILES=true \
-    # Auto-update-settings
+    # Auto update settings
     AUTO_UPDATE_ENABLED=false \
     AUTO_UPDATE_CRON_EXPRESSION="0 3 * * *" \
     AUTO_UPDATE_WARN_MINUTES=30 \
-    # Auto-restart-settings
+    # Auto restart settings
     AUTO_RESTART_ENABLED=false \
     AUTO_RESTART_WARN_MINUTES=30 \
     AUTO_RESTART_CRON_EXPRESSION="0 5 * * *" \
-    # Backup-settings
+    # Backup settings
     BACKUP_ENABLED=true \
     BACKUP_CRON_EXPRESSION="0 * * * *" \
     BACKUP_AUTO_CLEAN=true \
     BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP=72 \
-    # Webhook-settings
+    # Player monitoring settings
+    PLAYER_MONITOR_ENABLED=true \
+    PLAYER_MONITOR_INTERVAL=60 \
+    # Webhook settings
     WEBHOOK_ENABLED=false \
     WEBHOOK_URL= \
     WEBHOOK_START_TITLE="Server is starting" \
@@ -112,10 +136,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
     WEBHOOK_UPDATE_VALIDATE_TITLE="Updating and validating server" \
     WEBHOOK_UPDATE_VALIDATE_DESCRIPTION="Server is being updated and validated" \
     WEBHOOK_UPDATE_VALIDATE_COLOR="16776960" \
-    # Gameserver-start-settings
+    # Gameserver start settings
     MULTITHREAD_ENABLED=true \
     COMMUNITY_SERVER=true \
-    # Config-setting - Warning: using 'auto' will overwrite the settings in the config file with the environment variables
+    # Config setting - Warning: using 'auto' will overwrite the settings in the config file with the environment variables
     SERVER_SETTINGS_MODE=auto \
     # Engine.ini
     NETSERVERMAXTICKRATE=120 \
