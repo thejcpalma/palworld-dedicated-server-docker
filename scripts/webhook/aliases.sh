@@ -29,8 +29,13 @@ function send_update_and_validate_notification() {
 
 function send_restart_notification() {
   local restart_time=${1}
-  # Replace the placeholder with the actual restart time using parameter expansion
-  send_webhook_notification "${WEBHOOK_RESTART_TITLE}" "${WEBHOOK_RESTART_DESCRIPTION/X_MINUTES/$restart_time}" "${WEBHOOK_RESTART_COLOR}"
+
+  if [[ "${restart_time}" == "0" ]]; then
+    send_webhook_notification "${WEBHOOK_RESTART_TITLE}" "${WEBHOOK_RESTART_NOW_DESCRIPTION}" "${WEBHOOK_RESTART_COLOR}"
+  else
+    # Replace the placeholder with the actual restart time using parameter expansion
+    send_webhook_notification "${WEBHOOK_RESTART_TITLE}" "${WEBHOOK_RESTART_DESCRIPTION/X_MINUTES/$restart_time}" "${WEBHOOK_RESTART_COLOR}"
+  fi
 }
 
 

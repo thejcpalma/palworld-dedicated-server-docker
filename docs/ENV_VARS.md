@@ -260,11 +260,12 @@ Below are the environment variables for each type of webhook message:
 >
 > `X_MINUTES` will be replaced with the minutes passed to the restart function (`AUTO_RESTART_WARN_MINUTES` for the auto restart feature)
 
-| Variable                      | Description                             | Default Value                                               |
-| ----------------------------- | --------------------------------------- | ----------------------------------------------------------- |
-| `WEBHOOK_RESTART_TITLE`       | The title for the restart message       | `:arrows_counterclockwise: Restarting server`               |
-| `WEBHOOK_RESTART_DESCRIPTION` | The description for the restart message | `Server is restarting in X_MINUTES minute(s) :alarm_clock:` |
-| `WEBHOOK_RESTART_COLOR`       | The color for the restart message       | `16750848`                                                  |
+| Variable                          | Description                                 | Default Value                                               |
+| --------------------------------- | ------------------------------------------- | ----------------------------------------------------------- |
+| `WEBHOOK_RESTART_TITLE`           | The title for the restart message           | `:arrows_counterclockwise: Restarting server`               |
+| `WEBHOOK_RESTART_DESCRIPTION`     | The description for the restart message     | `Server is restarting in X_MINUTES minute(s) :alarm_clock:` |
+| `WEBHOOK_RESTART_NOW_DESCRIPTION` | The description for the restart now message | `Server is restarting in now! :alarm_clock:`                |
+| `WEBHOOK_RESTART_COLOR`           | The color for the restart message           | `16750848`                                                  |
 
 #### **• Install server message**
 
