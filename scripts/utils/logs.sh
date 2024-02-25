@@ -5,23 +5,23 @@
 # Use ANSI whenever possible. Makes logs compatible with almost all systems.
 
 # Aliases for colorful echos with newlines
-function echo_base() { 
+function log_base() { 
     colorful_echos --base "${@}" # to remove
 }
 
-function echo_error() { 
+function log_error() { 
     colorful_echos --error "${@}"
 }
 
-function echo_info() { 
+function log_info() { 
     colorful_echos --info "${@}"
 }
 
-function echo_success() { 
+function log_success() { 
     colorful_echos --success "${@}"
 }
 
-function echo_warning() {
+function log_warning() {
     colorful_echos --warning "${@}"
 }
 
@@ -29,7 +29,7 @@ function echo_warning() {
 # This creates a wrapper for echo to add colors
 function colorful_echos() {
     # Set color constants
-    BASE="\e[97m"              # Clean color
+    BASE="\e[97m"              # Base color
     CLEAN="\e[0m"              # Clean color
     ERROR="\e[91m"       # Red color for error
     INFO="\e[94m"         # Blue color for info
