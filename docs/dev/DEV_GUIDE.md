@@ -52,3 +52,31 @@ cp default.env test.env
 docker-compose -f docker-compose-test.yml up --build -d && \
 docker-compose -f docker-compose-test.yml logs -f
 ```
+
+## Guidelines and Best Practices
+
+### Nomenclature
+
+- Use `snake_case` for file names and directories.
+- Use `snake_case` for function and variable names.
+
+### Code Style
+
+- Use 4 spaces for indentation.
+- Use `snake_case` for function and variable names.
+- Use ShellCheck to lint your shell scripts.
+- On variables always wrap them in curly braces and double quotes `"${var}"`.
+- Keep the functions small and focused.
+- Only use shebang fot the files that are meant to be executed and not sourced.
+- Use `pushd` and `popd` instead of `cd` to change directories.
+- Use `local` to declare variables inside functions.
+- Keep the double commas when checking for env vars to avoid issues with user inputting values with capital letters (eg. `"${ENV_VAR,,}"`).
+- Use parameter expansion to replace placeholders in strings (eg. `"${var/X_MINUTES/$}"`).
+
+### Bash Extension
+
+If you are using the Bash extension check the following links for more information:
+
+- https://stackoverflow.com/a/13864829
+- https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02
+
