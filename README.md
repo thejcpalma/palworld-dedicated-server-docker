@@ -235,7 +235,7 @@ $ docker exec palworld-dedicated-server backup_list
 ## Run RCON commands
 
 > [!NOTE]
-> Please research the RCON commands on the official source: https://tech.palworldgame.com/server-commands
+> Please research the RCON commands on the official source: https://tech.palworldgame.com/settings-and-operation/commands
 
 Usage: `docker exec palworld-dedicated-server rconcli [command]`
 Examples:

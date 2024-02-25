@@ -111,7 +111,7 @@ Default values for the cron expressions:
 This section lists all the settings currently adjustable via Docker environment variables, based on the **order** and **contents of the DefaultPalWorldSettings.ini**.
 Information sources and credits to the following websites:
 
-- [Palworld Official Tech Guide](https://tech.palworldgame.com/optimize-game-balance) for the game server documentation
+- [Palworld Official Tech Guide](https://tech.palworldgame.com/settings-and-operation/configuration) for the game server documentation
 - [Palworld Setting Generator](https://dysoncheng.github.io/PalWorldSettingGenerator/setting.html) for variable descriptions
 - [Palworld Unofficial Wiki](https://palworld.wiki.gg/wiki/PalWorldSettings.ini) for variable descriptions
 - [Palworld Shockbyte Documentation](https://shockbyte.com/billing/knowledgebase/1189/How-to-Configure-your-Palworld-server.html) for variable descriptions
