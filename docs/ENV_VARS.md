@@ -2,7 +2,7 @@
 
 [Back to main](../README.md#environment-variables)
 
-In this section you will find a lot of environment variables to control your container, server behavior and game settings. 
+In this section you will find a lot of environment variables to control your container, server behavior and game settings.
 Due to the extensive control options, the settings are split into categories:
 
 - [Container Settings](#container-settings)
@@ -91,7 +91,7 @@ These settings control the special features of the server:
 
 #### Cron expression
 
-In a Cron-Expression, you define an interval for when to run jobs. 
+In a Cron-Expression, you define an interval for when to run jobs.
 Use the following format: `* * * * *` (Minute, Hour, Day of the month, Month, Day of the week).
 If you are not familiar with cron expressions, you can use a cron expression generator like [crontab-generator.org](https://crontab-generator.org).
 
@@ -117,10 +117,10 @@ Information sources and credits to the following websites:
 - [Palworld Shockbyte Documentation](https://shockbyte.com/billing/knowledgebase/1189/How-to-Configure-your-Palworld-server.html) for variable descriptions
 
 > [!IMPORTANT]
-> 
+>
 > Please note that all of this is subject to change. **The game is still in early access.**
 > Check out the [official webpage for the supported parameters.](https://tech.palworldgame.com/optimize-game-balance)
-> 
+>
 > To change a setting, you can set the environment variable to the value you want. If the environment variable is not set or is blank, the default value will be used.
 
 
@@ -207,7 +207,7 @@ The following environment variables are used to configure the webhook:
 ### Webhook Messages
 
 > [!WARNING]
-> 
+>
 > Please note that Hex-Colors (Example #eeeeee) are not supported. Instead, use the Decimal representation of the color.
 > To convert a Hex-Color to its Decimal representation, you can use online tools such as [SpyColor](https://www.spycolor.com/).
 > Search for the Hex-Color and use the Decimal representation of that color. Using Hex-Colors will cause errors!
@@ -227,16 +227,16 @@ Colors are represented in their decimal form.
 > Discord webhooks support both default emojis and custom emojis.
 >
 > Default emojis are available on all servers. You can use them directly in your messages.
-> 
+>
 > Custom emojis are specific to the server they were added on. To use a custom emoji in a webhook message, it must exist on the server that the webhook is linked to.
-> 
+>
 > Remember to use the correct syntax for each type of emoji
-> 
+>
 > Use [this guide](https://docs.formie.pro/how-to-find-emoji-ids) to find the correct ID for the emoji you want to use.
 
 Below are the environment variables for each type of webhook message:
 
-#### **• Start server message** 
+#### **• Start server message**
 
 | Variable                    | Description                           | Default Value                        |
 | --------------------------- | ------------------------------------- | ------------------------------------ |
@@ -245,7 +245,7 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_START_COLOR`       | The color for the start message       | `65280`                              |
 
 
-#### **• Stop server message** 
+#### **• Stop server message**
 
 | Variable                   | Description                          | Default Value                     |
 | -------------------------- | ------------------------------------ | --------------------------------- |
@@ -275,7 +275,7 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_INSTALL_DESCRIPTION` | The description for the install message | `Server is being installed` |
 | `WEBHOOK_INSTALL_COLOR`       | The color for the install message       | `1644912`                   |
 
-#### **• Update server message** 
+#### **• Update server message**
 
 | Variable                     | Description                            | Default Value             |
 | ---------------------------- | -------------------------------------- | ------------------------- |

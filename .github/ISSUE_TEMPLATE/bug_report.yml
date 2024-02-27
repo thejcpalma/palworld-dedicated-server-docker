@@ -65,8 +65,8 @@ body:
     attributes:
       label: Hardware setup
       value: |
-        - vCPU: 
-        - RAM: 
+        - vCPU:
+        - RAM:
         - Disk:
     validations:
       required: true

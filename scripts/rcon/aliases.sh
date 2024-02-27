@@ -38,11 +38,11 @@ function rcon_save_and_shutdown() {
     rconcli 'broadcast Saving before shutdown...'
     rconcli 'save'
     rconcli 'broadcast Saving done'
-    
+
     backup_manager create
-    
+
     rconcli "broadcast Server is shutting down now!"
-    
+
     sleep 1
 
     rconcli "doExit"
@@ -106,14 +106,14 @@ function rcon_restart() {
     players_online=$(rcon_get_player_count)
     if [ "${players_online}" -eq 0 ]; then
         log_info "> No players are online. Restarting the server now..."
-        
+
         rcon_broadcast_restart 0
     else
         log_info "> There are ${players_online} players online. Restarting the server in ${restart_warn_minutes} minute(s)..."
 
         rcon_broadcast_restart "${restart_warn_minutes}"
     fi
-    
+
     sleep 1
     rconcli "doExit"
 }
@@ -149,6 +149,3 @@ function rcon_broadcast_backup_failed() {
     fi
     rconcli 'broadcast Backup failed'
 }
-
-
-

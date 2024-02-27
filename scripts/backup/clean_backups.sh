@@ -15,7 +15,7 @@ function clean_backups() {
         log_info "> No files in the backup directory '${BACKUP_PATH}'. Exiting..."
         exit 0
     fi
-    
+
     files=$(ls -1t "${BACKUP_PATH}"/saved-*.tar.gz)
     files_to_delete=$(echo "${files}" | tail -n +$((num_files_to_keep + 1)))
 

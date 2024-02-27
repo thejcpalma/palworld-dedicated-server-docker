@@ -5,8 +5,8 @@ source "${SERVER_DIR}"/scripts/utils/logs.sh
 
 # Start supercronic and load crons
 function setup_crons() {
-    echo "" > cronlist   
-    # Auto backup cron job 
+    echo "" > cronlist
+    # Auto backup cron job
     if [[ -n ${BACKUP_ENABLED} ]] && [[ ${BACKUP_ENABLED,,} == "true" ]]; then
         echo "${BACKUP_CRON_EXPRESSION} ${SERVER_DIR}/scripts/backup_manager.sh create" >> cronlist
     fi

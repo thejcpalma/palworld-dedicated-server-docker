@@ -4,9 +4,9 @@
 source "${SERVER_DIR}"/scripts/utils/logs.sh
 source "${SERVER_DIR}"/scripts/rcon/aliases.sh
 
-# The difference between stop_server and restart_server is that stop server 
+# The difference between stop_server and restart_server is that stop server
 # will always be called on the SIGTERM signal sent by docker stop/restart command
-# and restart_server will be called when the server is restarted with 
+# and restart_server will be called when the server is restarted with
 # the auto restart/update features
 #
 # Depending on the docker restart policy:

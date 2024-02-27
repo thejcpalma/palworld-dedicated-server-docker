@@ -41,7 +41,7 @@ function parse_arguments() {
     case "$1" in
         init)
             check_default_credentials
-                
+
             install_server
             update_server
 

@@ -5,19 +5,19 @@
 # Use ANSI whenever possible. Makes logs compatible with almost all systems.
 
 # Aliases for colorful echos with newlines
-function log_base() { 
+function log_base() {
     colorful_echos --base "${@}" # to remove
 }
 
-function log_error() { 
+function log_error() {
     colorful_echos --error "${@}"
 }
 
-function log_info() { 
+function log_info() {
     colorful_echos --info "${@}"
 }
 
-function log_success() { 
+function log_success() {
     colorful_echos --success "${@}"
 }
 

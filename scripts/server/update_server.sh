@@ -10,7 +10,7 @@ steamcmd_dir="/home/steam/steamcmd"
 # Function: update_server
 # Description: This function is used to update the server.
 # Parameters: None
-# Returns: 0 (true) if 
+# Returns: 0 (true) if
 #          1 (false) if server is up-to-date
 function update_server() {
 
@@ -21,7 +21,7 @@ function update_server() {
     if [[ -n ${STEAMCMD_VALIDATE_FILES} ]] && [[ ${STEAMCMD_VALIDATE_FILES,,} == "true" ]]; then
         # The update here is forced because we can only use 'validate' with the option '+app_update' on 'steamcmd'
         log_warning ">> Updating and validating gameserver files..."
-        
+
         send_update_and_validate_notification
 
         "${steamcmd_dir}"/steamcmd.sh +force_install_dir "${GAME_ROOT}" +login anonymous +app_update "${APP_ID}" validate +quit

@@ -23,7 +23,7 @@ function create_backup() {
     else
         rcon_broadcast_backup_success
         log_success ">>> Backup '${backup_file_name}' created successfully."
-    fi 
+    fi
 
     # If retention policy is enabled, clean old backups
     if [[ -n ${BACKUP_AUTO_CLEAN} ]] && [[ ${BACKUP_AUTO_CLEAN,,} == "true" ]] && [[ ${BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP} =~ ^[0-9]+$ ]]; then

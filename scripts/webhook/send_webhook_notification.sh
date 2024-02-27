@@ -43,4 +43,3 @@ generate_post_data() {
 }
 EOF
 }
-
