@@ -14,12 +14,17 @@ function start_server() {
     START_OPTIONS=()
     if [[ -n ${COMMUNITY_SERVER} ]] && [[ ${COMMUNITY_SERVER,,} == "true" ]]; then
         log_info "> Setting Community-Mode to enabled"
-        START_OPTIONS+=("EpicApp=PalServer")
+        START_OPTIONS+=("-publiclobby")
     fi
 
     if [[ -n ${MULTITHREAD_ENABLED} ]] && [[ ${MULTITHREAD_ENABLED,,} == "true" ]]; then
         log_info "> Setting Multi-Core-Enhancements to enabled"
         START_OPTIONS+=("-useperfthreads" "-NoAsyncLoadingThread" "-UseMultithreadForDS")
+    fi
+
+    if [[ -n $RCON_ENABLED ]] && [[ $RCON_ENABLED == "true" ]]; then
+        log_info "> Setting RCON port to ${RCON_PORT} on server start options"
+        START_OPTIONS+=("-RCONPort=${RCON_PORT}")
     fi
 
     send_start_notification

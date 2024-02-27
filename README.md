@@ -148,8 +148,6 @@ These features will also need these settings to be set on the `docker-compose.ym
 > Manually restarting or updating the server won't show on the docker logs.
 >
 > Will use default warn time if not specified (restart - `AUTO_RESTART_WARN_MINUTES`; update - `AUTO_UPDATE_WARN_MINUTES`)
-> 
-> If after restart/update, no players are online near the bases they might not render correctly, causing pals to bug out (be stacked on the palbox, stop gathering, etc...
 
 You can also manually restart or update the server.
 

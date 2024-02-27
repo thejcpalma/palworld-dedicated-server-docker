@@ -212,6 +212,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SERVER_PASSWORD=serverPasswordHere \
     PUBLIC_PORT=8211 \
     PUBLIC_IP= \
+    SHOW_PLAYER_LIST=true \
     RCON_ENABLED=false \
     RCON_PORT=25575 \
     REGION= \

@@ -9,7 +9,7 @@ function create_file_if_not_exists() {
         log_warning "> No config found, generating one!"
         mkdir -p "$(dirname "$file_path")/"
         echo "" > "$file_path"
-    else 
+    else
         log_info "> Found existing config!"
     fi
 }
@@ -298,9 +298,16 @@ function setup_palworld_settings_ini() {
         echo "> Setting public port to '$PUBLIC_PORT'"
         sed -E -i "s/PublicPort=[0-9]*/PublicPort=$PUBLIC_PORT/" "$GAME_SETTINGS_FILE"
     fi
-    if [[ -n ${PUBLIC_IP+x} ]]; then
-        echo "> Setting public ip to '$PUBLIC_IP'"
+    if [[ -n ${PUBLIC_IP} ]]; then
+        echo "> Setting public IP to '███████████████'"
         sed -E -i "s/PublicIP=\"[^\"]*\"/PublicIP=\"$PUBLIC_IP\"/" "$GAME_SETTINGS_FILE"
+    else
+        echo "> Setting public IP to '$PUBLIC_IP'"
+        sed -E -i "s/PublicIP=\"[^\"]*\"/PublicIP=\"$PUBLIC_IP\"/" "$GAME_SETTINGS_FILE"
+    fi
+    if [[ -n ${SHOW_PLAYER_LIST+x} ]]; then
+        echo "> Setting bShowPlayerList to '$SHOW_PLAYER_LIST'"
+        sed -E -i "s/bShowPlayerList=[a-zA-Z]*/bShowPlayerList=$SHOW_PLAYER_LIST/" "$GAME_SETTINGS_FILE"
     fi
     if [[ -n ${RCON_ENABLED+x} ]]; then
         echo "> Setting rcon-enabled to '$RCON_ENABLED'"
@@ -348,7 +355,7 @@ function setup_rcon_yaml () {
             log_warning ">> Using environment variables to configure 'rcon.yaml' config file."
             log_info -n "> Admin Password: " && log_base "'██████████'"
             log_info -n "> RCON Port: " && log_base "'██████████'"
-            
+
             if [[ -n ${RCON_PORT+x} ]]; then
                 sed -i "s/###RCON_PORT###/$RCON_PORT/" "$RCON_CONFIG_FILE"
             else
@@ -380,7 +387,7 @@ function setup_rcon_yaml () {
                 log_error ">>> ADMIN_PASSWORD is not set in the file, please set it for RCON functionality to work!"
             fi
         fi
-        
+
         log_success ">>> Finished setting up 'rcon.yaml' config file."
     else
         log_warning ">> RCON is disabled, skipping 'rcon.yaml' config file!"
