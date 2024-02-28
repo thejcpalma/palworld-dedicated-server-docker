@@ -265,6 +265,8 @@ After enabling the server should send messages in a Discord-Compatible way to yo
 - Server fresh install
 - Server updating
 - Server updating and validating
+- Player joined
+- Player left
 
 ## FAQ
 
