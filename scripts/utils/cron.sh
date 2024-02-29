@@ -1,6 +1,6 @@
 # shellcheck disable=SC2148
-
 # shellcheck source=/dev/null
+
 source "${SERVER_DIR}"/scripts/utils/logs.sh
 
 # Start supercronic and load crons
