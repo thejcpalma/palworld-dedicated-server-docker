@@ -37,9 +37,9 @@ function is_float_with_six_decimals() {
     local number="$1"
     local default="$2"
 
-    if [[ ${number} =~ ^-?[0-9]+\.[0-9]{6}$ ]]; then
+    if [[ ${number} =~ ^?[0-9]+\.[0-9]{6}$ ]]; then
         echo "$1"
-    elif [[ ${number} =~ ^-?[0-9]+(\.[0-9]+)?$ ]]; then
+    elif [[ ${number} =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
         printf "%.*f\n" 6 "$1"
     else
         echo "${default}"
