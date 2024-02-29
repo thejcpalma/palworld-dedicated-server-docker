@@ -37,13 +37,15 @@ function colorful_echos() {
     WARNING="\e[93m"      # Yellow color for warning
 
     if [ $# -gt 3 ]; then
-        echo "Usage: $0 [--success|--error|--info|--warning|--base] [-n] <message>"
+        echo "Usage: $0 [--success|--error|--info|--warning|--base] -[n|e] <message>"
         echo "  --success: Print a success message"
         echo "  --error: Print an error message"
         echo "  --info: Print an info message"
         echo "  --warning: Print a warning message"
         echo "  --base: Print a base message"
         echo "  -n: Do not print a newline at the end of the message"
+        echo "  -e: Expand escape sequences in the message"
+        echo "  Use -n and -e combined like -ne or -en to expand escape sequences and not print a newline at the end of the message"
         exit 1
     fi
 
@@ -53,9 +55,17 @@ function colorful_echos() {
 
     shift
 
-    nl_flag="\n"
+    newline_flag="\n"
+    expand_flag=false
     if [ "$1" == "-n" ]; then
-        nl_flag=""
+        newline_flag=""
+        shift
+    elif [ "$1" == "-e" ]; then
+        expand_flag=true
+        shift
+    elif [ "$1" == "-ne" ] || [ "$1" == "-en" ]; then
+        newline_flag=""
+        expand_flag=true
         shift
     fi
 
@@ -73,19 +83,14 @@ function colorful_echos() {
     elif [ "$level" == "--base" ]; then
         color="$BASE"
     else
-        echo -ne "$message"
+        echo -n "$message"
         return 0
     fi
 
-    # print newlines in the beginning of the message
-    while [ "${message:0:2}" = "\\n" ]; do
-        # Print a newline
-        echo ""
-        # Remove the first two characters from the message
-        message="${message:2}"
-    done
-
-    # Print message with the specified color
-    echo -ne "${color}${message}${CLEAN}${nl_flag}"
+    if [ "$expand_flag" == true ]; then
+        printf "${color}%b${CLEAN}${newline_flag}" "${message}"
+    else
+        printf "${color}%s${CLEAN}${newline_flag}" "${message}"
+    fi
 
 }
