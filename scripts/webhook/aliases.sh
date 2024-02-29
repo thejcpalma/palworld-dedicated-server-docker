@@ -43,10 +43,10 @@ function send_restart_notification() {
 
 function send_player_join_notification() {
   local player_name="$1"
-  send_webhook_notification "${WEBHOOK_PLAYER_JOIN_TITLE}" "${WEBHOOK_PLAYER_JOIN_DESCRIPTION/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_JOIN_COLOR}"
+  send_webhook_notification "${WEBHOOK_PLAYER_JOIN_TITLE/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_JOIN_DESCRIPTION/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_JOIN_COLOR}"
 }
 
 function send_player_leave_notification() {
   local player_name="$1"
-  send_webhook_notification "${WEBHOOK_PLAYER_LEAVE_TITLE}" "${WEBHOOK_PLAYER_LEAVE_DESCRIPTION/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_LEAVE_COLOR}"
+  send_webhook_notification "${WEBHOOK_PLAYER_LEAVE_TITLE/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_LEAVE_DESCRIPTION/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_LEAVE_COLOR}"
 }

@@ -28,17 +28,27 @@ declare -a previous_players
 # Format: name,playeruid,steamid
 # Function to get the current player list
 get_current_players() {
+    # Clear the current players array
+    current_players=()
+
     # Execute the rcon command to get the list of players (supress stderr)
     player_list=$(rcon_get_player_list 2>/dev/null)
 
     # Remove the first line (header) from the player list
     player_list=$(echo "$player_list" | tail -n +2)
 
-    # Remove lines with ',00000000,' from the player list
-    player_list=$(echo "$player_list" | grep -v ',00000000,')
-
     # Convert the player list to an array
-    IFS=$'\n' read -d '' -r -a current_players <<< "$player_list"
+    while IFS= read -r line; do
+        # Skip lines that are empty or contain only commas
+        if [[ "$line" =~ ^,*$ ]]; then
+            continue
+        fi
+        # Skip lines that contain the UID '00000000'
+        if [[ "$line" =~ ,00000000, ]]; then
+            continue
+        fi
+        current_players+=("$line")
+    done <<< "$player_list"
 }
 
 # Function to compare the current player list with the previous one
@@ -54,32 +64,42 @@ compare_players() {
     # Check for players who have left
     for i in "${!previous_uids[@]}"; do
         if ! [[ " ${current_uids[*]} " =~ ${previous_uids[i]} ]]; then
-            left_players+=("$(echo "${previous_players[i]}" | awk -F',' -v OFS=',' '{for(i=1;i<=NF-2;i++) printf $i (i<NF-2?OFS:""); print ""}')")
+            left_players+=("${previous_players[i]}")
         fi
     done
 
     # Check for players who have joined
     for i in "${!current_uids[@]}"; do
         if ! [[ " ${previous_uids[*]} " =~ ${current_uids[i]} ]]; then
-            joined_players+=("$(echo "${current_players[i]}" | awk -F',' -v OFS=',' '{for(i=1;i<=NF-2;i++) printf $i (i<NF-2?OFS:""); print ""}')")
+            joined_players+=("${current_players[i]}")
         fi
     done
 
     # Log each player who has joined
     if [ ${#joined_players[@]} -ne 0 ]; then
         for player in "${joined_players[@]}"; do
-            log_info "> Player joined: '$player'"
-            send_player_join_notification "$player"
+            local player_name
+            player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//')
+            log_info "> Player joined: '$player_name'"
+            player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//' | tr '`' "'" | sed 's/\\\\/\\\\\\\\/g')
+            send_player_join_notification "\`$player_name\`"
         done
     fi
 
     # Log each player who has left
     if [ ${#left_players[@]} -ne 0 ]; then
         for player in "${left_players[@]}"; do
-            log_info "> Player left: '$player'"
-            send_player_leave_notification "$player"
+            local player_name
+            player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//')
+            log_info "> Player left: '$player_name'"
+            player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//' | tr '`' "'" | sed 's/\\\\/\\\\\\\\/g')
+            printf '%s\n' "$player_name"
+            send_player_leave_notification "\`$player_name\`"
         done
     fi
+
+    # Replace the previous player list with the current player list
+    previous_players=("${current_players[@]}")
 }
 
 function start_player_activity_monitor() {
