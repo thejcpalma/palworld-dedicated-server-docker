@@ -296,24 +296,26 @@ Below are the environment variables for each type of webhook message:
 
 > [!NOTE]
 >
-> `**PLAYER_NAME**` will be replaced with the name of the player that joined the server.
+> `PLAYER_NAME` is a variable that will be replaced with the name of the player that joined the server.
+> Use it on the title and/or description to show the player's name.
 
 | Variable                          | Description                          | Default Value          |
 | --------------------------------- | ------------------------------------ | ---------------------- |
-| `WEBHOOK_PLAYER_JOIN_TITLE`       | The title for the join message       | `:mage: Player Joined` |
-| `WEBHOOK_PLAYER_JOIN_DESCRIPTION` | The description for the join message | `**PLAYER_NAME**`      |
+| `WEBHOOK_PLAYER_JOIN_TITLE`       | The title for the join message       | `:mage: Player joined` |
+| `WEBHOOK_PLAYER_JOIN_DESCRIPTION` | The description for the join message | `### PLAYER_NAME`      |
 | `WEBHOOK_PLAYER_JOIN_COLOR`       | The color for the join message       | `1728512`              |
 
 #### **• Player leave message**
 
 > [!NOTE]
 >
-> `**PLAYER_NAME**` will be replaced with the name of the player that left the server.
+> `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
+> Use it on the title and/or description to show the player's name.
 
 | Variable                           | Description                           | Default Value        |
 | ---------------------------------- | ------------------------------------- | -------------------- |
-| `WEBHOOK_PLAYER_LEAVE_TITLE`       | The title for the leave message       | `:dash: Player Left` |
-| `WEBHOOK_PLAYER_LEAVE_DESCRIPTION` | The description for the leave message | `**PLAYER_NAME**`    |
+| `WEBHOOK_PLAYER_LEAVE_TITLE`       | The title for the leave message       | `:dash: Player left` |
+| `WEBHOOK_PLAYER_LEAVE_DESCRIPTION` | The description for the leave message | `### PLAYER_NAME`    |
 | `WEBHOOK_PLAYER_LEAVE_COLOR`       | The color for the leave message       | `6291482`            |
 
 
