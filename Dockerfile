@@ -52,7 +52,10 @@ LABEL org.opencontainers.image.source="https://github.com/thejcpalma/palworld-de
 
 # Install minimum required packages for dedicated server
 RUN apt-get update \
- && apt-get install -y --no-install-recommends --no-install-suggests procps xdg-user-dirs \
+ && apt-get install -y --no-install-recommends --no-install-suggests \
+    procps \
+    xdg-user-dirs \
+    jq \
  && apt-get autoremove -y --purge \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

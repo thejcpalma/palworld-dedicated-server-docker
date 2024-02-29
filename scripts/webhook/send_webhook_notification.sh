@@ -27,19 +27,33 @@ function send_webhook_notification() {
   # Debug Curl
   #curl --ssl-no-revoke -H "Content-Type: application/json" -X POST -d "$data" "$WEBHOOK_URL"
   # Prod Curl
-  curl --silent --ssl-no-revoke -H "Content-Type: application/json" -X POST -d "$data" "$WEBHOOK_URL"
+  curl -sfSL --ssl-no-revoke -H "Content-Type: application/json" -X POST -d "$data" "$WEBHOOK_URL"
 }
 
 # Function to generate JSON data for the Discord message
 generate_post_data() {
-  cat <<EOF
-{
-  "content": "",
-  "embeds": [{
-    "title": "$1",
-    "description": "$2",
-    "color": $3
-  }]
+  jq -n \
+    --arg title "$1" \
+    --arg description "$2" \
+    --argjson color "$3" \
+    '{
+      "content": "",
+      "embeds": [{
+        "title": $title,
+        "description": $description,
+        "color": $color
+      }]
+    }'
 }
-EOF
-}
+# generate_post_data() {
+#   cat <<EOF
+# {
+#   "content": "",
+#   "embeds": [{
+#     "title": "$1",
+#     "description": "$2",
+#     "color": $3
+#   }]
+# }
+# EOF
+# }
