@@ -55,6 +55,7 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends --no-install-suggests \
     procps \
     xdg-user-dirs \
+    gettext-base \
     jq \
  && apt-get autoremove -y --purge \
  && apt-get clean \

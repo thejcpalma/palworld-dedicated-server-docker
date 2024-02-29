@@ -2,7 +2,7 @@
 # shellcheck source=/dev/null
 
 source "${SERVER_DIR}"/scripts/utils/cron.sh
-source "${SERVER_DIR}"/scripts/utils/config.sh
+source "${SERVER_DIR}"/scripts/config/setup_configs.sh
 for file in "${SERVER_DIR}"/scripts/server/*.sh; do
     source "$file"
 done
