@@ -24,6 +24,9 @@ function update_server() {
 
         send_update_and_validate_notification
 
+        rm /palworld/steamapps/appmanifest_2394010.acf
+
+
         "${steamcmd_dir}"/steamcmd.sh +force_install_dir "${GAME_ROOT}" +login anonymous +app_update "${APP_ID}" validate +quit
         log_success ">>> Done updating and validating gameserver files"
     else
@@ -32,6 +35,9 @@ function update_server() {
             log_warning ">> Updating gameserver files..."
 
             send_update_notification
+
+            rm /palworld/steamapps/appmanifest_2394010.acf
+
 
             "${steamcmd_dir}"/steamcmd.sh +force_install_dir "${GAME_ROOT}" +login anonymous +app_update "${APP_ID}" +quit
             log_success ">>> Done updating gameserver files"
