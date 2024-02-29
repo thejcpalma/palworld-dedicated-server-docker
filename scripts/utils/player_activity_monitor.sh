@@ -80,7 +80,7 @@ compare_players() {
         for player in "${joined_players[@]}"; do
             local player_name
             player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//')
-            log_info "> Player joined: '$player_name'"
+            log_info -n "> Player joined: " && log_base "'$player_name'"
             player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//' | tr '`' "'" | sed 's/\\\\/\\\\\\\\/g')
             send_player_join_notification "\`$player_name\`"
         done
@@ -91,9 +91,8 @@ compare_players() {
         for player in "${left_players[@]}"; do
             local player_name
             player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//')
-            log_info "> Player left: '$player_name'"
+            log_info -n "> Player left: " && log_base "'$player_name'"
             player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//' | tr '`' "'" | sed 's/\\\\/\\\\\\\\/g')
-            printf '%s\n' "$player_name"
             send_player_leave_notification "\`$player_name\`"
         done
     fi
@@ -128,6 +127,8 @@ function start_player_activity_monitor() {
 
         # Compare it with the previous one
         compare_players
+
+        log_info -n "> Player count: " && log_base "'$(rcon_get_player_count)'"
 
         # Move the current player list to the previous player list
         previous_players=("${current_players[@]}")
