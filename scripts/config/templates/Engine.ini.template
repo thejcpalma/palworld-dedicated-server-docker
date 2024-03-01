@@ -71,45 +71,45 @@ Paths=../../../Pal/Plugins/Wwise/Content
 ; Adjusting tick rates for LAN and Internet servers to enhance the frequency of game state updates,
 ; leading to smoother gameplay and less desynchronization between server and clients.
 [/Script/OnlineSubsystemUtils.IpNetDriver]
-LanServerMaxTickRate=120 ; Sets maximum ticks per second for LAN servers, higher rates result in smoother gameplay.
-NetServerMaxTickRate=120 ; Sets maximum ticks per second for Internet servers, similarly ensuring smoother online gameplay.
+LanServerMaxTickRate=${LanServerMaxTickRate} ; Sets maximum ticks per second for LAN servers, higher rates result in smoother gameplay.
+NetServerMaxTickRate=${NetServerMaxTickRate} ; Sets maximum ticks per second for Internet servers, similarly ensuring smoother online gameplay.
 
 ; Player Configuration
 ; These settings are crucial for optimizing the network bandwidth allocation per player,
 ; allowing for more data to be sent and received without bottlenecking.
 [/Script/Engine.Player]
-ConfiguredInternetSpeed=104857600 ; Sets the assumed player internet speed in bytes per second. High value reduces chances of bandwidth throttling.
-ConfiguredLanSpeed=104857600      ; Sets the LAN speed, ensuring LAN players can utilize maximum network capacity.
+ConfiguredInternetSpeed=${ConfiguredInternetSpeed} ; Sets the assumed player internet speed in bytes per second. High value reduces chances of bandwidth throttling.
+ConfiguredLanSpeed=${ConfiguredLanSpeed}           ; Sets the LAN speed, ensuring LAN players can utilize maximum network capacity.
 
 ; Socket Subsystem Epic Configuration
 ; Tailoring the max client rate for both local and internet clients, this optimizes data transfer rates,
 ; ensuring that the server can handle high volumes of data without causing lag.
 [/Script/SocketSubsystemSpic.EpicNetDriver]
-MaxClientRate=104857600         ; Maximum data transfer rate per client for all connections, set to a high value to prevent data capping.
-MaxInternetClientRate=104857600 ; Specifically targets internet clients, allowing for high-volume data transfer without restrictions.
+MaxClientRate=${MaxClientRate}                 ; Maximum data transfer rate per client for all connections, set to a high value to prevent data capping.
+MaxInternetClientRate=${MaxInternetClientRate} ; Specifically targets internet clients, allowing for high-volume data transfer without restrictions.
 
 ; Engine Configuration
 ; These settings manage how the game's frame rate is handled, which can impact how smoothly the game runs.
 ; Smoother frame rates can lead to a better synchronization between client and server.
 [/Script/Engine.Engine]
-bSmoothFrameRate=true         ; Enables the game engine to smooth out frame rate fluctuations for a more consistent visual experience.
-bUseFixedFrameRate=false      ; Disables the use of a fixed frame rate, allowing the game to dynamically adjust frame rate for optimal performance.
-SmoothedFrameRateRange=(LowerBound=(Type=Inclusive,Value=30.000000),UpperBound=(Type=Exclusive,Value=120.000000)) ; Sets a target frame rate range for smoothing.
-MinDesiredFrameRate=60.000000 ; Specifies a minimum acceptable frame rate, ensuring the game runs smoothly at least at this frame rate.
-FixedFrameRate=120.000000     ; (Not active due to bUseFixedFrameRate set to false) Placeholder for a fixed frame rate if needed.
-NetClientTicksPerSecond=120   ; Increases the update frequency for clients, enhancing responsiveness and reducing lag.
+bSmoothFrameRate=${bSmoothFrameRate}               ; Enables the game engine to smooth out frame rate fluctuations for a more consistent visual experience.
+SmoothedFrameRateRange=(LowerBound=(Type=Inclusive,Value=${SmoothedFrameRateRangeLowerBound}),UpperBound=(Type=Exclusive,Value=${SmoothedFrameRateRangeUpperBound})) ; Sets a target frame rate range for smoothing.
+MinDesiredFrameRate=${MinDesiredFrameRate}         ; Specifies a minimum acceptable frame rate, ensuring the game runs smoothly at least at this frame rate.
+bUseFixedFrameRate=${bUseFixedFrameRate}           ; Disables the use of a fixed frame rate, allowing the game to dynamically adjust frame rate for optimal performance.
+FixedFrameRate=${FixedFrameRate}                   ; (Not active due to bUseFixedFrameRate set to false) Placeholder for a fixed frame rate if needed.
+NetClientTicksPerSecond=${NetClientTicksPerSecond} ; Increases the update frequency for clients, enhancing responsiveness and reducing lag.
 
 
 ; Garbage Collection Settings
 ; These settings manage how the game handles memory management and garbage collection,
 ; which can impact the game's performance and stability.
 [/Script/Engine.GarbageCollectionSettings]
-TimeBetweenPurgingPendingKillObjects=30 ; Sets the time in seconds between purging pending kill objects, freeing up memory and reducing memory leaks.
+TimeBetweenPurgingPendingKillObjects=${TimeBetweenPurgingPendingKillObjects} ; Sets the time in seconds between purging pending kill objects, freeing up memory and reducing memory leaks.
 
 
 ; Renderer Settings
 ; These settings manage how the game's rendering is handled, which can impact the game's performance and visual quality.
 ; Enabling threaded rendering and physics can improve performance by distributing the workload across multiple threads.
 [/Script/Engine.RendererSettings]
-r.ThreadedRendering=true ; Enables threaded rendering, distributing the rendering workload across multiple threads for improved performance.
-r.ThreadedPhysics=true   ; Enables threaded physics, distributing the physics workload across multiple threads for improved performance.
+r.ThreadedRendering=${rThreadedRendering} ; Enables threaded rendering, distributing the rendering workload across multiple threads for improved performance.
+r.ThreadedPhysics=${rThreadedPhysics}   ; Enables threaded physics, distributing the physics workload across multiple threads for improved performance.
