@@ -128,8 +128,6 @@ function start_player_activity_monitor() {
         # Compare it with the previous one
         compare_players
 
-        log_info -n "> Player count: " && log_base "'$(rcon_get_player_count)'"
-
         # Move the current player list to the previous player list
         previous_players=("${current_players[@]}")
 
