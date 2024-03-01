@@ -126,37 +126,35 @@ function check_and_export() {
     local default=$4
     local array=("${@:5}")
 
+    local to_export
+
     case "$type" in
         int)
             to_export="$(is_integer "$env_var" "$default")"
-            log_base "> Setting $name to '$to_export'"
             export "$name"="$to_export"
             ;;
         float)
             to_export="$(is_float_with_six_decimals "$env_var" "$default")"
-            log_base "> Setting $name to '$to_export'"
             export "$name"="$to_export"
             ;;
         bool)
             to_export="$(is_bool "$env_var" "$default")"
-            log_base "> Setting $name to '$to_export'"
             export "$name"="$to_export"
             ;;
         list)
             to_export="$(is_in_list "$env_var" "$default" "${array[@]}")"
-            log_base "> Setting $name to '$to_export'"
             export "$name"="$to_export"
             ;;
         hidden)
             to_export="${env_var:-$default}"
-            log_base "> Setting $name to '████████████████'"
             export "$name"="\"${to_export}\""
             ;;
         *)
             to_export="${env_var:-$default}"
             to_export="${to_export/"###RANDOM###"/$RANDOM}"
-            log_base "> Setting $name to '$to_export'"
             export "$name"="\"${to_export}\""
     esac
+    log_info -n "> Setting '" && log_base -n "$name" && log_info -n "' to '" && log_base -n "$to_export" && log_info "'"
+
 }
 
