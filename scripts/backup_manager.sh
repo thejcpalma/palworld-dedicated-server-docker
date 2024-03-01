@@ -1,9 +1,14 @@
 #!/bin/bash
-# shellcheck disable=SC1091,SC2012,SC2004
+# shellcheck disable=SC2012,SC2004
+# shellcheck source=/dev/null
 
-source "${PWD}"/includes/colors.sh
-source "${PWD}"/includes/rcon.sh
-source "${PWD}"/includes/backup.sh
+
+source "${SERVER_DIR}"/scripts/utils/logs.sh
+source "${SERVER_DIR}"/scripts/rcon/aliases.sh
+for file in "${SERVER_DIR}"/scripts/backup/*.sh; do
+    source "$file"
+done
+
 
 # Environment variables for reference
 # BACKUP_PATH: Directory where the backup files are stored
@@ -40,7 +45,7 @@ function print_usage() {
 
 function parse_arguments() {
     if [ ${#} -lt 1 ]; then
-        echo_warning ">> Not enough arguments"
+        log_warning ">> Not enough arguments"
         print_usage
         exit 1
     fi
@@ -49,7 +54,7 @@ function parse_arguments() {
     case "$1" in
         create)
             if [ ${#} -ne 1 ]; then
-                ee ">>> Invalid number of arguments for 'create'"
+                log_error ">>> Invalid number of arguments for 'create'"
                 print_usage
                 exit 1
             fi
@@ -57,7 +62,7 @@ function parse_arguments() {
             ;;
         list)
             if [ ${#} -gt 2 ]; then
-                ee ">>> Invalid number of arguments for 'list'"
+                log_error ">>> Invalid number of arguments for 'list'"
                 print_usage
                 exit 1
             fi
@@ -65,7 +70,7 @@ function parse_arguments() {
             local number_to_list=${2:-""}
 
             if [[ -n "${number_to_list}" ]] && [[ ! "${number_to_list}" =~ ^[0-9]+$ ]]; then
-                ew ">> Invalid argument '${number_to_list}'. Please provide a positive integer."
+                log_warning ">> Invalid argument '${number_to_list}'. Please provide a positive integer."
                 exit 1
             fi
 
@@ -73,7 +78,7 @@ function parse_arguments() {
             ;;
         clean)
             if [ ${#} -gt 2 ]; then
-                ee ">>> Invalid number of arguments for 'clean'"
+                log_error ">>> Invalid number of arguments for 'clean'"
                 print_usage
                 exit 1
             fi
@@ -81,7 +86,7 @@ function parse_arguments() {
             local num_backup_entries=${2:-${BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP}}
 
             if ! [[ "${num_backup_entries}" =~ ^[0-9]+$ ]]; then
-                ew ">> Invalid argument '${num_backup_entries}'. Please provide a positive integer."
+                log_warning ">> Invalid argument '${num_backup_entries}'. Please provide a positive integer."
                 exit 1
             fi
 
@@ -89,7 +94,7 @@ function parse_arguments() {
             ;;
         restore)
             if [ ${#} -ne 2 ]; then
-                ee ">>> Invalid number of arguments for 'restore'"
+                log_error ">>> Invalid number of arguments for 'restore'"
                 print_usage
                 exit 1
             fi
@@ -99,14 +104,14 @@ function parse_arguments() {
             ;;
         help)
             if [ ${#} -ne 1 ]; then
-                ee ">>> Invalid number of arguments for 'help'"
+                log_error ">>> Invalid number of arguments for 'help'"
                 print_usage
                 exit 1
             fi
             print_usage
             ;;
         *)
-            ee ">>> Illegal option '${1}'"
+            log_error ">>> Illegal option '${1}'"
             print_usage
             exit 1
             ;;
@@ -116,23 +121,23 @@ function parse_arguments() {
 function check_required_directories() {
 
     if [ -z "${GAME_PATH}" ]; then
-        ee ">>> GAME_PATH environment variable not set.\n Exiting..."
+        log_error ">>> GAME_PATH environment variable not set.\n Exiting..."
         exit 1
     elif [ ! -d "${GAME_PATH}" ]; then
-        ee ">>> Game directory '${GAME_PATH}' doesn't exist yet."
+        log_error ">>> Game directory '${GAME_PATH}' doesn't exist yet."
         exit 1
     fi
 
     if [ -z "${GAME_SAVE_PATH}" ]; then
-        ee ">>> GAME_SAVE_PATH environment variable not set.\n Exiting..."
+        log_error ">>> GAME_SAVE_PATH environment variable not set.\n Exiting..."
         exit 1
     elif [ ! -d "${GAME_SAVE_PATH}" ]; then
-        ee ">>> Game save directory '${GAME_SAVE_PATH}' doesn't exist yet."
+        log_error ">>> Game save directory '${GAME_SAVE_PATH}' doesn't exist yet."
         exit 1
     fi
 
     if [ ! -d "${BACKUP_PATH}" ]; then
-        ew ">> Backup directory ${BACKUP_PATH} doesn't exist. Creating it..."
+        log_warning ">> Backup directory ${BACKUP_PATH} doesn't exist. Creating it..."
         mkdir -p "${BACKUP_PATH}"
     fi
 }

@@ -1,28 +1,12 @@
 #!/bin/bash
-# In /wrappers folder because it uses functions from includes/server.sh
-# and it's not a standalone script
 
+# Wrapper for server manager restart function
+# Makes the usage easier when running the restart feature on both cron and cli
 
-# shellcheck disable=SC1091
-source "${PWD}"/includes/server.sh
-
-if [ $# -gt 1 ]; then
-    exit
-elif [ $# -eq 0 ]; then
-    # Fallback in case no argument is provided
-    echo_warning ">> Restarting server in 30 minutes..."
-    restart_server 30 &
+if [[ $(whoami) == "steam" ]]; then
+    /home/steam/server/scripts/server_manager.sh restart "$@"
+elif [[ $(whoami) == "root" ]]; then
+    su steam -c "/home/steam/server/scripts/server_manager.sh restart $*"
 else
-    if ! [[ $1 =~ ^[0-9]+$ ]]; then
-        echo_warning ">>> Invalid argument: ${1}"
-        exit
-    fi
-
-    if [ "${1}" -eq 0 ]; then
-        echo_warning ">> Restarting server now..."
-        restart_server 0 &
-    else
-        echo_warning ">> Restarting server in ${1} minute(s)..."
-        restart_server "${1}" &
-    fi
+    echo "This script must be run as steam or root"
 fi
