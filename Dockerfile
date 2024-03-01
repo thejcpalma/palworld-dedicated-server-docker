@@ -157,7 +157,22 @@ ENV DEBIAN_FRONTEND=noninteractive \
     # Config setting - Warning: using 'auto' will overwrite the settings in the config file with the environment variables
     SERVER_SETTINGS_MODE=auto \
     # Engine.ini
-    NETSERVERMAXTICKRATE=120 \
+    LAN_SERVER_MAX_TICK_RATE=120 \
+    NET_SERVER_MAX_TICK_RATE=120 \
+    CONFIGURED_INTERNET_SPEED=104857600 \
+    CONFIGURED_LAN_SPEED=104857600 \
+    MAX_CLIENT_RATE=104857600 \
+    MAX_INTERNET_CLIENT_RATE=104857600 \
+    SMOOTH_FRAME_RATE=true \
+    SMOOTH_FRAME_RATE_UPPER_BOUND=30.000000 \
+    SMOOTH_FRAME_RATE_LOWER_BOUND=120.000000 \
+    MIN_DESIRED_FRAME_RATE=60.000000 \
+    USE_FIXED_FRAME_RATE=false \
+    FIXED_FRAME_RATE=120.000000 \
+    NET_CLIENT_TICKS_PER_SECOND=120 \
+    TIME_BETWEEN_PURGING_PENDING_KILL_OBJECTS=30 \
+    THREADED_RENDERING=true \
+    THREADED_PHYSICS=true \
     # PalWorldSettings.ini
     DIFFICULTY=None \
     DAY_TIME_SPEEDRATE=1.000000 \
@@ -216,12 +231,12 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SERVER_PASSWORD=serverPasswordHere \
     PUBLIC_PORT=8211 \
     PUBLIC_IP= \
-    SHOW_PLAYER_LIST=true \
     RCON_ENABLED=false \
     RCON_PORT=25575 \
     REGION= \
     USEAUTH=true \
-    BAN_LIST_URL=https://api.palworldgame.com/api/banlist.txt
+    BAN_LIST_URL=https://api.palworldgame.com/api/banlist.txt \
+    SHOW_PLAYER_LIST=false
 
 
 EXPOSE 8211/udp

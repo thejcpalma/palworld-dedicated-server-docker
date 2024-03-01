@@ -71,7 +71,7 @@ These settings control the special features of the server:
 | `BACKUP_AUTO_CLEAN`                | Enables automatic cleanup of old backups                                                                | `true`        | `false`/`true`                          |
 | `BACKUP_AUTO_CLEAN_AMOUNT_TO_KEEP` | The amount of backups to keep                                                                           | `72`          | Integer                                 |
 | `PLAYER_MONITOR_ENABLED`           | Enables player monitoring for the server                                                                | `false`       | `false`/`true`                          |
-| `PLAYER_MONITOR_INTERVAL`          | The interval in seconds for the player monitoring  (lower values means more impact on system resources) | `60`          | Positive integer                        |
+| `PLAYER_MONITOR_INTERVAL`          | The interval in seconds for the player monitoring  (lower values means more impact on system resources) | `60`          | Integer                                 |
 
 
 ### Server Settings
@@ -102,9 +102,30 @@ Default values for the cron expressions:
 
 ### Engine Settings
 
-| Variable               | Game setting         | Description                                                    | Default value | Allowed value |
-| ---------------------- | -------------------- | -------------------------------------------------------------- | ------------- | ------------- |
-| `NETSERVERMAXTICKRATE` | NetServerMaxTickRate | Changes the TickRate of the server, be very careful with this! | `120`         | `30`-`120`    |
+| Variable                                    | Game setting                         | Description                                                                                                     | Default value | Allowed value       |
+| ------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------- | ------------- | ------------------- |
+| `LAN_SERVER_MAX_TICK_RATE`                  | LanServerMaxTickRate                 | Changes the TickRate of the server, be very careful with this!                                                  | `120`         | Integer             |
+| `NET_SERVER_MAX_TICK_RATE`                  | NetServerMaxTickRate                 | Changes the TickRate of the server, be very careful with this!                                                  | `120`         | Integer             |
+| `CONFIGURED_INTERNET_SPEED`                 | ConfiguredInternetSpeed              | Sets the assumed player internet speed in bytes per second. High value reduces chances of bandwidth throttling. | `104857600`   | Integer  (in bytes) |
+| `CONFIGURED_LAN_SPEED`                      | ConfiguredLanSpeed                   | Sets the LAN speed, ensuring LAN players can utilize maximum network capacity.                                  | `104857600`   | Integer  (in bytes) |
+| `MAX_CLIENT_RATE`                           | MaxClientRate                        | Maximum data transfer rate per client for all connections, set to a high value to prevent data capping.         | `104857600`   | Integer  (in bytes) |
+| `MAX_INTERNET_CLIENT_RATE`                  | MaxInternetClientRate                | Specifically targets internet clients, allowing for high-volume data transfer without restrictions.             | `104857600`   | Integer  (in bytes) |
+| `SMOOTH_FRAME_RATE`                         | bSmoothFrameRate                     | Enables the game engine to smooth out frame rate fluctuations for a more consistent visual experience.          | `true`        | `false`/`true`      |
+| `SMOOTH_FRAME_RATE_UPPER_BOUND`             | SmoothFrameRateRange                 | Sets a max target frame rate range for smoothing.                                                               | `120.000000`  | Float               |
+| `SMOOTH_FRAME_RATE_LOWER_BOUND`             | SmoothFrameRateRange                 | Sets a min target frame rate range for smoothing.                                                               | `30.000000`   | Float               |
+| `MIN_DESIRED_FRAME_RATE`                    | MinDesiredFrameRate                  | Specifies a minimum acceptable frame rate, ensuring the game runs smoothly at least at this frame rate.         | `60.000000`   | Float               |
+| `USE_FIXED_FRAME_RATE`                      | bUseFixedFrameRate                   | Enables the use of a fixed frame rate                                                                           | `false`       | `false`/`true`      |
+| `FIXED_FRAME_RATE`                          | FixedFrameRate                       | Fixed frame rate                                                                                                | `120.000000`  | Float               |
+| `NET_CLIENT_TICKS_PER_SECOND`               | NetClientTicksPerSecond              | Increases the update frequency for clients, enhancing responsiveness and reducing lag.                          | `120`         | Integer             |
+| `TIME_BETWEEN_PURGING_PENDING_KILL_OBJECTS` | TimeBetweenPurgingPendingKillObjects | time in seconds between purging pending kill objects, freeing up memory and reducing memory leaks.              | `30`          | Integer             |
+| `THREADED_RENDERING`                        | r.ThreadedRendering                  | Enables the use of multiple thread for rendering, improving performance.                                        | `true`        | `false`/`true`      |
+| `THREADED_PHYSICS`                          | r.ThreadedPhysics                    | Enables the use multiple thread for physics, improving performance.                                             | `true`        | `false`/`true`      |
+
+
+> [!TIP]
+>
+> While setting the server tickrate above to 120 fps will make some gameplay aspect smoother,
+> it won't fix rubber-banding and will tax your hardware significantly more.
 
 ### Palworld Game Settings
 
@@ -183,12 +204,12 @@ Information sources and credits to the following websites:
 | `SERVER_PASSWORD`                           | ServerPassword                       | Set the server password.                                                                                                                                          | `serverPasswordHere`                                        | String         |
 | `PUBLIC_PORT`                               | PublicPort                           | Public port number                                                                                                                                                | `8211`                                                      | Integer        |
 | `PUBLIC_IP`                                 | PublicIP                             | Public IP or FQDN                                                                                                                                                 |                                                             | String         |
-| `SHOW_PLAYER_LIST`                          | bShowPlayerList                      | Make the player list public on a community server                                                                                                                 | `false`                                                     | `false`/`true` |
 | `RCON_ENABLED`                              | RCONEnabled                          | Enable RCON - Use ADMIN_PASSWORD to login                                                                                                                         | `false`                                                     | `false`/`true` |
 | `RCON_PORT`                                 | RCONPort                             | Port number for RCON                                                                                                                                              | `25575`                                                     | Integer        |
 | `REGION`                                    | Region                               | Area                                                                                                                                                              |                                                             | String         |
 | `USEAUTH`                                   | bUseAuth                             | Use authentication                                                                                                                                                | `true`                                                      | `false`/`true` |
 | `BAN_LIST_URL`                              | BanListURL                           | Which ban list to use                                                                                                                                             | `https://api.palworldgame.com/api/banlist.txt`              | String         |
+| `SHOW_PLAYER_LIST`                          | bShowPlayerList                      | Make the player list public on a community server                                                                                                                 | `false`                                                     | `false`/`true` |
 
 
 ## Webhook Settings
