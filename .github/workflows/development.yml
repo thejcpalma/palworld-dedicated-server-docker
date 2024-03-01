@@ -50,8 +50,21 @@ jobs:
         id: slug
         run: echo "GIT_SHORT_SHA7=$(echo ${GITHUB_SHA} | cut -c1-7)" >> "$GITHUB_OUTPUT"
 
+      - name: Check README.md shield tag
+        id: check_shield_tag
+        run: |
+          if grep -q "readme-dev-blue" README.md; then
+            echo "The shield tag is already set to 'dev'. No update needed."
+            echo "{update_required}={false}" >> $GITHUB_OUTPUT
+          else
+            echo "The shield tag is not set to 'dev'. Proceeding with the update."
+            echo "{update_required}={true}" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
       # Defines the readme version to the dev tag
       - name: Update README.md
+        if: steps.check_shield_tag.outputs.update_required == 'true'
         run: |
           echo "Changing README.md version to 'dev'."
           sed "s/readme-\(.*\)-blue/readme-dev-blue/g" README.md > temp.md
@@ -64,6 +77,7 @@ jobs:
           git push origin main
 
       - name: Checkout after README.md update
+        if: steps.check_shield_tag.outputs.update_required == 'true'
         uses: actions/checkout@v4
 
       - name: Build and push
