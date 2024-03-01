@@ -256,6 +256,16 @@ Colors are represented in their decimal form.
 >
 > Use [this guide](https://docs.formie.pro/how-to-find-emoji-ids) to find the correct ID for the emoji you want to use.
 
+> [!NOTE]
+>
+> Mentions in Discord Webhooks:
+>
+> Discord webhooks support Mentions in the format `<@user_id>`.
+>
+> Add it to any message (title or description) to mention a user in the message.
+>
+> Use [this guide](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID) to find the correct ID for the user.
+
 Below are the environment variables for each type of webhook message:
 
 #### **• Start server message**
