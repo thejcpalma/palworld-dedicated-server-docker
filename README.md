@@ -45,7 +45,7 @@ ___
   - [Player Monitoring](#player-monitoring)
 - [Backup Manager](#backup-manager)
 - [Run RCON commands](#run-rcon-commands)
-- [Webhook integration](#webhook-integration)
+- [Discord Webhook integration](#discord-webhook-integration)
   - [Supported events](#supported-events)
 - [FAQ](#faq)
   - [How can I use the interactive console in Portainer with this image?](#how-can-i-use-the-interactive-console-in-portainer-with-this-image)
@@ -244,9 +244,9 @@ $ docker exec palworld-dedicated-server rconcli ShowPlayers
 thejcpalma,1234,5789
 ```
 
-## Webhook integration
+## Discord Webhook integration
 
-To enable webhook integrations, you need to set the following environment variables in the `default.env`:
+To enable Discord webhook integrations, you need to set the following environment variables in the `default.env`:
 
 ```shell
 WEBHOOK_ENABLED=true
