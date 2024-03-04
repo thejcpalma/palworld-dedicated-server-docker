@@ -13,8 +13,8 @@ function setup_palworld_settings_ini(){
 
     template_file=${SERVER_DIR}/scripts/config/templates/PalWorldSettings.ini.template
 
-    # Remove the first line of the template file and remove the newlines and carriage returns
-    awk 'NR==1{print;next}{printf "%s",$0}' "${template_file}" | tr -d '\r' > "${GAME_SETTINGS_FILE}"
+    # Skip the first line of the template file and remove the newlines and carriage returns for the rest of the file
+    awk 'NR==1{print;next}{printf "%s",$0}' "${template_file}" | tr -d '\r' > "${GAME_SETTINGS_FILE}.tmp"
 
     difficulty_options=("None" "Normal" "Difficult")
     check_and_export "list"   "Difficulty" "${DIFFICULTY}" "None" "${difficulty_options[@]}"
@@ -82,8 +82,7 @@ function setup_palworld_settings_ini(){
     check_and_export "other"  "BanListURL" "${BAN_LIST_URL}" ""
     check_and_export "bool"   "bShowPlayerList" "${SHOW_PLAYER_LIST}" "true"
 
-    envsubst < "${GAME_SETTINGS_FILE}" > "${GAME_SETTINGS_FILE}.tmp" && mv "${GAME_SETTINGS_FILE}.tmp" "${GAME_SETTINGS_FILE}"
+    envsubst < "${GAME_SETTINGS_FILE}.tmp" > "${GAME_SETTINGS_FILE}" && rm "${GAME_SETTINGS_FILE}.tmp"
 
     log_success ">>> Finished setting up PalWorldSettings.ini"
-
 }

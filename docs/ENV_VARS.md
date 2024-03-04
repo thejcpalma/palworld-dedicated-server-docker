@@ -9,8 +9,9 @@ Due to the extensive control options, the settings are split into categories:
   - [TZ identifiers](#tz-identifiers)
 - [Dedicated Server Settings](#dedicated-server-settings)
   - [Special Features](#special-features)
-  - [Server Settings](#server-settings)
     - [Cron expression](#cron-expression)
+  - [Server Settings](#server-settings)
+  - [Engine Configuration Mode](#engine-configuration-mode)
   - [Engine Settings](#engine-settings)
   - [Palworld Game Settings](#palworld-game-settings)
 - [Webhook Settings](#webhook-settings)
@@ -73,22 +74,6 @@ These settings control the special features of the server:
 | `PLAYER_MONITOR_ENABLED`           | Enables player monitoring for the server                                                                | `false`       | `false`/`true`                          |
 | `PLAYER_MONITOR_INTERVAL`          | The interval in seconds for the player monitoring  (lower values means more impact on system resources) | `60`          | Integer                                 |
 
-
-### Server Settings
-
-| Variable               | Description                                                                | Default value | Allowed value                                                                                                                                             |
-| ---------------------- | -------------------------------------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MULTITHREAD_ENABLED`  | Sets options for "Improved multi-threaded CPU  "                           | `true`        | `false`/`true`                                                                                                                                            |
-| `COMMUNITY_SERVER`     | Set to enabled, the server will appear in the Community Server list        | `true`        | `false`/`true`                                                                                                                                            |
-| `SERVER_SETTINGS_MODE` | Whether settings (game and engine) are configured via env vars or via file | `auto`        | `auto`: Modified  by env vars, file will be overwritten always<br>`manual`: Modified only by editing the file directly, environment variables are ignored |
-
-> [!IMPORTANT]
->
-> Take special attention to `SERVER_SETTINGS_MODE`, if you want to change the server settings via environment variables use the default value (`auto`), otherwise change it to `manual` and edit the config file directly.
-> The RCON config file will be configured accordingly to the `SERVER_SETTINGS_MODE` value.
-> If you change the `SERVER_SETTINGS_MODE` to `manual`, it will grab the settings from the file and ignore the environment variables.
-> If you change the `SERVER_SETTINGS_MODE` to `auto`, it will grab the settings from the environment variables and ignore the file.
-
 #### Cron expression
 
 In a Cron-Expression, you define an interval for when to run jobs.
@@ -100,7 +85,52 @@ Default values for the cron expressions:
  - Auto updates: `0 3 * * *` (Every day at 3am)
  - Auto backups: `0 * * * *` (Every hour)
 
+### Server Settings
+
+| Variable              | Description                                                         | Default value | Allowed value  |
+| --------------------- | ------------------------------------------------------------------- | ------------- | -------------- |
+| `MULTITHREAD_ENABLED` | Sets options for "Improved multi-threaded CPU"                      | `true`        | `false`/`true` |
+| `COMMUNITY_SERVER`    | Set to enabled, the server will appear in the Community Server list | `true`        | `false`/`true` |
+
+> [!IMPORTANT]
+>
+> Take special attention to `SERVER_SETTINGS_MODE`, if you want to change the server settings via environment variables use the default value (`auto`), otherwise change it to `manual` and edit the config file directly.
+
+This setting controls how the server settings files (`PalWorldSettings.ini` and `Engine.ini`) are configured:
+ - `auto`: will use environment variables to configure the files
+ - `manual`: will skip the configuration of the files and files will have to be edited manually
+
+| Variable               | Description                                                                       | Default value | Allowed value   |
+| ---------------------- | --------------------------------------------------------------------------------- | ------------- | --------------- |
+| `SERVER_SETTINGS_MODE` | Whether settings are configured via environment variables or manually on the file | `auto`        | `auto`/`manual` |
+
+> [!NOTE]
+>
+> For `PalWorldSettings.ini`, all settings with empty values (e.g. `EXP_RATE=""`) will be overwritten the default value.
+> For `Engine.ini` refer to the [Engine Settings](#engine-settings) section for more information.
+>
+> The rules below apply to both `PalWorldSettings.ini` and `Engine.ini`:
+> All settings which are in a wrong format (putting a string in a float variable like `EXP_RATE="very_fast"`) will be ignored and the default value will be used instead.
+> Integers on float variables will be converted to floats (e.g. `EXP_RATE=2` will be converted to `2.000000`).
+> Floats with more than 6 decimal places will be rounded to 6 decimal places (e.g. `EXP_RATE=2.123456789` will be converted to `2.123457`).
+> Variables where we have multiple options (like `DIFFICULTY`) will always be converted to lowercase (e.g. `DIFFICULTY="Normal"` will be converted to `difficulty="normal"`) to maintain consistency.
+
+### Engine Configuration Mode
+
+When `SERVER_SETTINGS_MODE` is set to `auto`, we will use environment variables to configure the engine settings.
+
+The `ENGINE_CONFIG_MODE` environment variable controls how the engine settings are configured:
+ - `full`: will add all the settings in the Engine.ini.template file with the environment variables values or the default values for those settings
+ - `modular`: will only set the settings in the engine file when the corresponding environment variable is set and not empty
+ - `skip`: will always skip the configuration of the settings in the engine file (even if `SERVER_SETTINGS_MODE` to `auto`)
+
+| Variable             | Description                         | Default value | Allowed value           |
+| -------------------- | ----------------------------------- | ------------- | ----------------------- |
+| `ENGINE_CONFIG_MODE` | How `Engine.ini` file is configured | `modular`     | `full`/`modular`/`skip` |
+
 ### Engine Settings
+
+This section contains all the settings currently adjustable via environment variables, based on the **order** and **contents of the [`Engine.ini.template`](../scripts/config/templates/Engine.ini.template)**.
 
 | Variable                                    | Game setting                         | Description                                                                                                     | Default value | Allowed value       |
 | ------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------- | ------------- | ------------------- |
@@ -129,9 +159,9 @@ Default values for the cron expressions:
 
 ### Palworld Game Settings
 
-This section lists all the settings currently adjustable via Docker environment variables, based on the **order** and **contents of the DefaultPalWorldSettings.ini**.
-Information sources and credits to the following websites:
+This section lists all the settings currently adjustable via environment variables, based on the **order** and **contents of the [`PalWorldSettings.ini.template`](../scripts/config/templates/PalWorldSettings.ini.template)** (which is the same as `DefaultPalWorldSettings.ini`).
 
+Information sources and credits to the following websites:
 - [Palworld Official Tech Guide](https://tech.palworldgame.com/settings-and-operation/configuration) for the game server documentation
 - [Palworld Setting Generator](https://dysoncheng.github.io/PalWorldSettingGenerator/setting.html) for variable descriptions
 - [Palworld Unofficial Wiki](https://palworld.wiki.gg/wiki/PalWorldSettings.ini) for variable descriptions
@@ -340,6 +370,8 @@ Below are the environment variables for each type of webhook message:
 
 > [!NOTE]
 >
+> `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
+> `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
 > `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
 > Use it on the title and/or description to show the player's name.
 

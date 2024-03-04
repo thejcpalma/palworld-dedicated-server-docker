@@ -154,25 +154,30 @@ ENV DEBIAN_FRONTEND=noninteractive \
     # Gameserver start settings
     MULTITHREAD_ENABLED=true \
     COMMUNITY_SERVER=true \
-    # Config setting - Warning: using 'auto' will overwrite the settings in the config file with the environment variables
+    # Config setting - Warning: using 'auto' will overwrite the settings in the PalWorldSettings file with the environment variables
     SERVER_SETTINGS_MODE=auto \
+    # Engine Configuration Mode:
+    #  - 'full' will overwrite the settings in the config file with the environment variables or default values
+    #  - 'modular' will only set the settings in the config file when the corresponding environment variable is set and not empty
+    #  - 'skip' will skip the configuration of the settings in the config file
+    ENGINE_CONFIG_MODE=modular \
     # Engine.ini
-    LAN_SERVER_MAX_TICK_RATE=120 \
+    LAN_SERVER_MAX_TICK_RATE= \
     NET_SERVER_MAX_TICK_RATE=120 \
-    CONFIGURED_INTERNET_SPEED=104857600 \
-    CONFIGURED_LAN_SPEED=104857600 \
-    MAX_CLIENT_RATE=104857600 \
-    MAX_INTERNET_CLIENT_RATE=104857600 \
-    SMOOTH_FRAME_RATE=true \
-    SMOOTH_FRAME_RATE_UPPER_BOUND=30.000000 \
-    SMOOTH_FRAME_RATE_LOWER_BOUND=120.000000 \
-    MIN_DESIRED_FRAME_RATE=60.000000 \
-    USE_FIXED_FRAME_RATE=false \
-    FIXED_FRAME_RATE=120.000000 \
-    NET_CLIENT_TICKS_PER_SECOND=120 \
-    TIME_BETWEEN_PURGING_PENDING_KILL_OBJECTS=30 \
-    THREADED_RENDERING=true \
-    THREADED_PHYSICS=true \
+    CONFIGURED_INTERNET_SPEED= \
+    CONFIGURED_LAN_SPEED= \
+    MAX_CLIENT_RATE= \
+    MAX_INTERNET_CLIENT_RATE= \
+    SMOOTH_FRAME_RATE= \
+    SMOOTH_FRAME_RATE_UPPER_BOUND= \
+    SMOOTH_FRAME_RATE_LOWER_BOUND= \
+    MIN_DESIRED_FRAME_RATE= \
+    USE_FIXED_FRAME_RATE= \
+    FIXED_FRAME_RATE= \
+    NET_CLIENT_TICKS_PER_SECOND= \
+    TIME_BETWEEN_PURGING_PENDING_KILL_OBJECTS= \
+    THREADED_RENDERING= \
+    THREADED_PHYSICS= \
     # PalWorldSettings.ini
     DIFFICULTY=None \
     DAY_TIME_SPEEDRATE=1.000000 \
