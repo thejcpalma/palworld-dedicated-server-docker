@@ -43,10 +43,49 @@ function send_restart_notification() {
 
 function send_player_join_notification() {
   local player_name="$1"
-  send_webhook_notification "${WEBHOOK_PLAYER_JOIN_TITLE/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_JOIN_DESCRIPTION/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_JOIN_COLOR}"
+  local player_uid="$2"
+  local player_steam_uid="$3"
+  local possible_steam_ids="$4"
+
+  local title_message
+  local description_message
+
+  title_message="${WEBHOOK_PLAYER_JOIN_TITLE/PLAYER_NAME/$player_name}"
+  title_message="${title_message/PLAYER_UID/$player_uid}"
+  title_message="${title_message/PLAYER_STEAM_UID/$player_steam_uid}"
+
+  description_message="${WEBHOOK_PLAYER_JOIN_DESCRIPTION/PLAYER_NAME/$player_name}"
+  description_message="${description_message/PLAYER_UID/$player_uid}"
+  description_message="${description_message/PLAYER_STEAM_UID/$player_steam_uid}"
+
+  if [[ -n "${possible_steam_ids}" ]] && { [[ "${WEBHOOK_PLAYER_JOIN_TITLE}" == *"PLAYER_STEAM_UID"* ]] || [[ "${WEBHOOK_PLAYER_JOIN_DESCRIPTION}" == *"PLAYER_STEAM_UID"* ]]; }; then
+    send_webhook_notification "${title_message}" "${description_message}" "${WEBHOOK_PLAYER_JOIN_COLOR}" "Invalid STEAM UID (Player name has special characters!).\nPossible Profiles:" "${possible_steam_ids}"
+  else
+    send_webhook_notification "${title_message}" "${description_message}" "${WEBHOOK_PLAYER_JOIN_COLOR}"
+  fi
+
 }
 
 function send_player_leave_notification() {
   local player_name="$1"
-  send_webhook_notification "${WEBHOOK_PLAYER_LEAVE_TITLE/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_LEAVE_DESCRIPTION/PLAYER_NAME/$player_name}" "${WEBHOOK_PLAYER_LEAVE_COLOR}"
+  local player_uid="$2"
+  local player_steam_uid="$3"
+  local possible_steam_ids="$4"
+
+  local title_message
+  local description_message
+
+  title_message="${WEBHOOK_PLAYER_LEAVE_TITLE/PLAYER_NAME/$player_name}"
+  title_message="${title_message/PLAYER_UID/$player_uid}"
+  title_message="${title_message/PLAYER_STEAM_UID/$player_steam_uid}"
+
+  description_message="${WEBHOOK_PLAYER_LEAVE_DESCRIPTION/PLAYER_NAME/$player_name}"
+  description_message="${description_message/PLAYER_UID/$player_uid}"
+  description_message="${description_message/PLAYER_STEAM_UID/$player_steam_uid}"
+
+  if [[ -n "${possible_steam_ids}" ]] && { [[ "${WEBHOOK_PLAYER_LEAVE_TITLE}" == *"PLAYER_STEAM_UID"* ]] || [[ "${WEBHOOK_PLAYER_LEAVE_DESCRIPTION}" == *"PLAYER_STEAM_UID"* ]]; }; then
+    send_webhook_notification "${title_message}" "${description_message}" "${WEBHOOK_PLAYER_LEAVE_COLOR}" "Invalid STEAM UID (Player name has special characters!).\nPossible Profiles:" "${possible_steam_ids}"
+  else
+    send_webhook_notification "${title_message}" "${description_message}" "${WEBHOOK_PLAYER_LEAVE_COLOR}"
+  fi
 }

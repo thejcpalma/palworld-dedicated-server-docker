@@ -17,14 +17,14 @@ Due to the extensive control options, the settings are split into categories:
 - [Webhook Settings](#webhook-settings)
   - [Webhook Configuration](#webhook-configuration)
   - [Webhook Messages](#webhook-messages)
-    - [**• Start server message**](#-start-server-message)
-    - [**• Stop server message**](#-stop-server-message)
-    - [**• Restart server message**](#-restart-server-message)
-    - [**• Install server message**](#-install-server-message)
-    - [**• Update server message**](#-update-server-message)
-    - [**• Update and validation server message**](#-update-and-validation-server-message)
-    - [**• Player join message**](#-player-join-message)
-    - [**• Player leave message**](#-player-leave-message)
+    - [**- Start server message**](#--start-server-message)
+    - [**- Stop server message**](#--stop-server-message)
+    - [**- Restart server message**](#--restart-server-message)
+    - [**- Install server message**](#--install-server-message)
+    - [**- Update server message**](#--update-server-message)
+    - [**- Update and validation server message**](#--update-and-validation-server-message)
+    - [**- Player join message**](#--player-join-message)
+    - [**- Player leave message**](#--player-leave-message)
 
 ## Container Settings
 
@@ -298,7 +298,7 @@ Colors are represented in their decimal form.
 
 Below are the environment variables for each type of webhook message:
 
-#### **• Start server message**
+#### **- Start server message**
 
 | Variable                    | Description                           | Default Value                        |
 | --------------------------- | ------------------------------------- | ------------------------------------ |
@@ -307,7 +307,7 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_START_COLOR`       | The color for the start message       | `65280`                              |
 
 
-#### **• Stop server message**
+#### **- Stop server message**
 
 | Variable                   | Description                          | Default Value                     |
 | -------------------------- | ------------------------------------ | --------------------------------- |
@@ -316,7 +316,7 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_STOP_COLOR`       | The color for the stop message       | `16711680`                        |
 
 
-#### **• Restart server message**
+#### **- Restart server message**
 
 > [!NOTE]
 >
@@ -329,7 +329,7 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_RESTART_NOW_DESCRIPTION` | The description for the restart now message | `Server is restarting in now! :alarm_clock:`                |
 | `WEBHOOK_RESTART_COLOR`           | The color for the restart message           | `16750848`                                                  |
 
-#### **• Install server message**
+#### **- Install server message**
 
 | Variable                      | Description                             | Default Value               |
 | ----------------------------- | --------------------------------------- | --------------------------- |
@@ -337,7 +337,7 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_INSTALL_DESCRIPTION` | The description for the install message | `Server is being installed` |
 | `WEBHOOK_INSTALL_COLOR`       | The color for the install message       | `1644912`                   |
 
-#### **• Update server message**
+#### **- Update server message**
 
 | Variable                     | Description                            | Default Value             |
 | ---------------------------- | -------------------------------------- | ------------------------- |
@@ -345,7 +345,7 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_UPDATE_DESCRIPTION` | The description for the update message | `Server is being updated` |
 | `WEBHOOK_UPDATE_COLOR`       | The color for the update message       | `16776960`                |
 
-#### **• Update and validation server message**
+#### **- Update and validation server message**
 
 | Variable                              | Description                                           | Default Value                                            |
 | ------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
@@ -353,12 +353,18 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_UPDATE_VALIDATE_DESCRIPTION` | The description for the update and validation message | `Server is being updated and validated`                  |
 | `WEBHOOK_UPDATE_VALIDATE_COLOR`       | The color for the update and validation message       | `16776960`                                               |
 
-#### **• Player join message**
+#### **- Player join message**
 
 > [!NOTE]
 >
 > `PLAYER_NAME` is a variable that will be replaced with the name of the player that joined the server.
-> Use it on the title and/or description to show the player's name.
+> `PLAYER_UID` is a variable that will be replaced with the UID of the player that joined the server.
+> `PLAYER_STEAM_UID` is a variable that will be replaced with the Steam UID of the player that joined the server.
+> Use it on the title and/or description to show the player's name, UID and/or Steam UID.
+
+> [!WARNING]
+>
+> When **Steam ID is invalid** and **you have `PLAYER_STEAM_UID` in your title or description message**, the webhook message will always contain the possible Steam profiles associated with the player and change `PLAYER_STEAM_UID` to `###INVALID_STEAM_UID###`.
 
 | Variable                          | Description                          | Default Value          |
 | --------------------------------- | ------------------------------------ | ---------------------- |
@@ -366,14 +372,25 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_PLAYER_JOIN_DESCRIPTION` | The description for the join message | `### PLAYER_NAME`      |
 | `WEBHOOK_PLAYER_JOIN_COLOR`       | The color for the join message       | `1728512`              |
 
-#### **• Player leave message**
+> [!TIP]
+>
+> You can use the `PLAYER_STEAM_UID` variable to link the Steam profile of the player that joined the server on the **description** (doesn't work on the title).
+> E.g.:
+> - `### PLAYER_NAME (Steam: [PLAYER_STEAM_UID](https://steamcommunity.com/profiles/PLAYER_STEAM_UID))` will show the player's name and link to their Steam profile.
+> - `### [PLAYER_NAME](https://steamcommunity.com/profiles/PLAYER_STEAM_UID)` will show the player's name and their UID.
+
+#### **- Player leave message**
 
 > [!NOTE]
 >
 > `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
-> `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
-> `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
+> `PLAYER_UID` is a variable that will be replaced with the UID of the player that joined the server.
+> `PLAYER_STEAM_UID` is a variable that will be replaced with the Steam UID of the player that joined the server.
 > Use it on the title and/or description to show the player's name.
+
+> [!WARNING]
+>
+> When **Steam ID is invalid** and **you have `PLAYER_STEAM_UID` in your title or description message**, the webhook message will always contain the possible Steam profiles associated with the player and change `PLAYER_STEAM_UID` to `###INVALID_STEAM_UID###`.
 
 | Variable                           | Description                           | Default Value        |
 | ---------------------------------- | ------------------------------------- | -------------------- |
@@ -381,5 +398,11 @@ Below are the environment variables for each type of webhook message:
 | `WEBHOOK_PLAYER_LEAVE_DESCRIPTION` | The description for the leave message | `### PLAYER_NAME`    |
 | `WEBHOOK_PLAYER_LEAVE_COLOR`       | The color for the leave message       | `6291482`            |
 
+> [!TIP]
+>
+> You can use the `PLAYER_STEAM_UID` variable to link the Steam profile of the player that joined the server on the **description** (doesn't work on the title).
+> E.g.:
+> - `### PLAYER_NAME (Steam: [PLAYER_STEAM_UID](https://steamcommunity.com/profiles/PLAYER_STEAM_UID))` will show the player's name and link to their Steam profile.
+> - `### [PLAYER_NAME](https://steamcommunity.com/profiles/PLAYER_STEAM_UID)` will show the player's name and their UID.
 
 [Back to main](../README.md#environment-variables)
