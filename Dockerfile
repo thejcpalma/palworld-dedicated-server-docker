@@ -1,6 +1,6 @@
 # Description: Dockerfile for Palworld Dedicated Server
 
-# Build the rcon binary
+# Build the rcon binaries (GORCON and custom rcon broadcast built by @thejcpalma)
 FROM golang:1.22.0-bookworm as rcon-build
 
 WORKDIR /build
@@ -18,6 +18,12 @@ RUN curl -fsSLO "$GORCON_RCONCLI_URL" \
  && rm "$GORCON_RCONCLI_TGZ" \
  && rm -Rf "$GORCON_RCONCLI_DIR" \
  && go build -v ./cmd/gorcon
+
+WORKDIR /build/custom_rcon_broadcast/
+
+# Build the custom rcon broadcast binary
+COPY  /src/custom_rcon_broadcast/ .
+RUN go build -v -o /build/rcon_broadcast main.go
 
 # Build the supercronic binary
 FROM debian:bookworm-slim as supercronic-build
@@ -61,8 +67,9 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Copy the rcon and supercronic binaries
+# Copy the rcon, custom rcon broadcast (to fix spaces in the message) and supercronic binaries
 COPY --from=rcon-build        --chmod=755  /build/gorcon               /usr/local/bin/rcon
+COPY --from=rcon-build        --chmod=755  /build/rcon_broadcast       /usr/local/bin/rcon_broadcast
 COPY --from=supercronic-build --chmod=755  /usr/local/bin/supercronic  /usr/local/bin/supercronic
 
 ENV APP_ID=2394010
@@ -70,8 +77,6 @@ ENV SERVER_DIR=/home/steam/server
 
 COPY --chown=steam:steam --chmod=755 scripts/       ${SERVER_DIR}/scripts
 COPY --chown=steam:steam --chmod=755 entrypoint.sh  ${SERVER_DIR}/
-# Copy custom rcon broadcast to fix spaces in the message
-COPY --chmod=755 bin/rcon_broadcast /usr/local/bin/rcon_broadcast
 
 RUN ln -s ${SERVER_DIR}/scripts/backup_manager.sh               /usr/local/bin/backup_manager \
  && ln -s ${SERVER_DIR}/scripts/rcon/rconcli.sh                 /usr/local/bin/rconcli \
