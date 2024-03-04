@@ -27,7 +27,7 @@ rconcli() {
     fi
 
     log_info -n "> RCON: "
-    log_base "$output"
+    echo "$output"
 }
 
 rconcli "$*"

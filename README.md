@@ -188,6 +188,28 @@ Events monitored:
 
 Player events are logged in the container logs and sent to the webhook if enabled.
 
+Logging format is `> Player [joined/left]: PLAYER_NAME | UID: PLAYER_UID | Steam ID: PLAYER_STEAM_UID`.
+
+If `PLAYER_STEAM_UID` is invalid (when players have spacial characters in their name, receiving 16 digits instead of 17 on the `RCON` `ShowPlayers` command), it will be logged but it will be missing the last digit.
+When this happens, the server will give a warning message in the logs and list all possible steam profiles associated with the player that joined/left.
+It does this by testing all 10 combos of the last digit from 0 to 9 (e.g. `"PLAYER_STEAM_UID" + "3"`).
+
+Log example:
+```shell
+> Player joined: PLAYER_NAME | UID: PLAYER_UID | Steam ID: XXXXXXXXXXXXXXXX
+>> Invalid Steam ID - Should have 17 digits but has 16 digits!
+>> Possible Steam IDs:
+> Profile name is: profile1 | Profile link: https://steamcommunity.com/profiles/XXXXXXXXXXXXXXXX1
+> Profile name is: ___Profile2___ | Profile link: https://steamcommunity.com/profiles/XXXXXXXXXXXXXXXX3
+> Profile name is: pROFILe_$%4 | Profile link: https://steamcommunity.com/profiles/XXXXXXXXXXXXXXXX7
+```
+
+> [!NOTE]
+>
+> You can use `PLAYER_NAME`, `PLAYER_UID` and `PLAYER_STEAM_UID` in the webhook messages.
+> When Steam ID is invalid, the webhook message will always contain the possible Steam profiles associated with the player and change `PLAYER_STEAM_UID` to `###INVALID_STEAM_UID###`.
+> See more info about this integration [here](/docs/ENV_VARS.md#--player-join-message).
+
 ## Backup Manager
 
 > [!WARNING]

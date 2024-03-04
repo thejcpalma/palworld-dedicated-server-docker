@@ -23,7 +23,7 @@ function start_server() {
     fi
 
     if [[ -n $RCON_ENABLED ]] && [[ $RCON_ENABLED == "true" ]]; then
-        log_info "> Setting RCON port to ${RCON_PORT} on server start options"
+        log_info "> Setting RCON port on server start options"
         START_OPTIONS+=("-RCONPort=${RCON_PORT}")
     fi
 
