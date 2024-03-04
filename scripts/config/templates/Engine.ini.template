@@ -84,7 +84,7 @@ ConfiguredLanSpeed=${ConfiguredLanSpeed}           ; Sets the LAN speed, ensurin
 ; Socket Subsystem Epic Configuration
 ; Tailoring the max client rate for both local and internet clients, this optimizes data transfer rates,
 ; ensuring that the server can handle high volumes of data without causing lag.
-[/Script/SocketSubsystemSpic.EpicNetDriver]
+[/Script/SocketSubsystemEpic.EpicNetDriver]
 MaxClientRate=${MaxClientRate}                 ; Maximum data transfer rate per client for all connections, set to a high value to prevent data capping.
 MaxInternetClientRate=${MaxInternetClientRate} ; Specifically targets internet clients, allowing for high-volume data transfer without restrictions.
 
@@ -99,13 +99,11 @@ bUseFixedFrameRate=${bUseFixedFrameRate}           ; Disables the use of a fixed
 FixedFrameRate=${FixedFrameRate}                   ; (Not active due to bUseFixedFrameRate set to false) Placeholder for a fixed frame rate if needed.
 NetClientTicksPerSecond=${NetClientTicksPerSecond} ; Increases the update frequency for clients, enhancing responsiveness and reducing lag.
 
-
 ; Garbage Collection Settings
 ; These settings manage how the game handles memory management and garbage collection,
 ; which can impact the game's performance and stability.
 [/Script/Engine.GarbageCollectionSettings]
 TimeBetweenPurgingPendingKillObjects=${TimeBetweenPurgingPendingKillObjects} ; Sets the time in seconds between purging pending kill objects, freeing up memory and reducing memory leaks.
-
 
 ; Renderer Settings
 ; These settings manage how the game's rendering is handled, which can impact the game's performance and visual quality.
