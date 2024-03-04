@@ -55,10 +55,10 @@ jobs:
         run: |
           if grep -q "readme-dev-blue" README.md; then
             echo "The shield tag is already set to 'dev'. No update needed."
-            echo "{update_required}={false}" >> $GITHUB_OUTPUT
+            echo "update_required=false" >> "$GITHUB_OUTPUT"
           else
             echo "The shield tag is not set to 'dev'. Proceeding with the update."
-            echo "{update_required}={true}" >> $GITHUB_OUTPUT
+            echo "update_required=true" >> "$GITHUB_OUTPUT"
           fi
         shell: bash
 
