@@ -15,6 +15,7 @@ rconcli() {
     fi
 
     if [[ ! -f "${RCON_CONFIG_FILE}" ]]; then
+        log_error ">>> RCON config file not found. Aborting RCON command ..."
         return
     fi
 

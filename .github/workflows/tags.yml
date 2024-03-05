@@ -13,16 +13,25 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Update README.md
+    - name: Delete tag from remote and local
       run: |
-        echo "Tag ${{ github.ref }} was created."
         VERSION=${GITHUB_REF#refs/tags/}
+        echo "Tag ${{ github.ref }} was created. Deleting tag '$VERSION' from remote and local. "
+        git tag -d $VERSION
+        git push --delete origin $VERSION
+
+
+    - name: Update README.md and push with version tag
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/}
+        echo "Tagging updated README.md with '$VERSION'."
         sed "s/readme-\(.*\)-blue/readme-$VERSION-blue/g" README.md > temp.md
         mv temp.md README.md
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions"
         git add README.md
         git commit -m "Update README.md for tag '$VERSION' [skip ci]"
+        git tag $VERSION
         git push origin HEAD:main
