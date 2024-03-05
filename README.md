@@ -5,7 +5,7 @@
 ![Docker Pulls](https://img.shields.io/docker/pulls/thejcpalma/palworld-dedicated-server)
 ![Docker Stars](https://img.shields.io/docker/stars/thejcpalma/palworld-dedicated-server)
 ![Image Size](https://img.shields.io/docker/image-size/thejcpalma/palworld-dedicated-server/latest)
-[![Static Badge](https://img.shields.io/badge/readme-0.2.1-blue?link=https%3A%2F%2Fgithub.com%2Fthejcpalma%2Fpalworld-dedicated-server-docker%2Fblob%2Fmain%2FREADME.md)](https://github.com/thejcpalma/palworld-dedicated-server-docker?tab=readme-ov-file#palworld-dedicated-server-docker)
+[![Static Badge](https://img.shields.io/badge/readme-dev-blue?link=https%3A%2F%2Fgithub.com%2Fthejcpalma%2Fpalworld-dedicated-server-docker%2Fblob%2Fmain%2FREADME.md)](https://github.com/thejcpalma/palworld-dedicated-server-docker?tab=readme-ov-file#palworld-dedicated-server-docker)
 ![Discord](https://img.shields.io/discord/1206023011011141702?logo=discord&label=Discord&link=https%3A%2F%2Fdiscord.gg%2FycanfK9R5B)
 
 
