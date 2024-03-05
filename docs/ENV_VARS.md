@@ -110,10 +110,10 @@ This setting controls how the server settings files (`PalWorldSettings.ini` and 
 > For `Engine.ini` refer to the [Engine Settings](#engine-settings) section for more information.
 >
 > The rules below apply to both `PalWorldSettings.ini` and `Engine.ini`:
-> All settings which are in a wrong format (putting a string in a float variable like `EXP_RATE="very_fast"`) will be ignored and the default value will be used instead.
-> Integers on float variables will be converted to floats (e.g. `EXP_RATE=2` will be converted to `2.000000`).
-> Floats with more than 6 decimal places will be rounded to 6 decimal places (e.g. `EXP_RATE=2.123456789` will be converted to `2.123457`).
-> Variables where we have multiple options (like `DIFFICULTY`) will always be converted to lowercase (e.g. `DIFFICULTY="Normal"` will be converted to `difficulty="normal"`) to maintain consistency.
+>  - All settings which are in a wrong format (putting a string in a float variable like `EXP_RATE="very_fast"`) will be ignored and the default value will be used instead.
+>  - Integers on float variables will be converted to floats (e.g. `EXP_RATE=2` will be converted to `2.000000`).
+>  - Floats with more than 6 decimal places will be rounded to 6 decimal places (e.g. `EXP_RATE=2.123456789` will be converted to `2.123457`).
+>  - Variables where we have multiple options (like `DIFFICULTY`) will always be converted to lowercase (e.g. `DIFFICULTY="Normal"` will be converted to `difficulty="normal"`) to maintain consistency.
 
 ### Engine Configuration Mode
 
@@ -154,8 +154,7 @@ This section contains all the settings currently adjustable via environment vari
 
 > [!TIP]
 >
-> While setting the server tickrate above to 120 fps will make some gameplay aspect smoother,
-> it won't fix rubber-banding and will tax your hardware significantly more.
+> While setting the server tickrate above to 120 fps will make some gameplay aspect smoother, it won't fix rubber-banding and will tax your hardware significantly more.
 
 ### Palworld Game Settings
 
@@ -170,6 +169,7 @@ Information sources and credits to the following websites:
 > [!IMPORTANT]
 >
 > Please note that all of this is subject to change. **The game is still in early access.**
+> 
 > Check out the [official webpage for the supported parameters.](https://tech.palworldgame.com/optimize-game-balance)
 >
 > To change a setting, you can set the environment variable to the value you want. If the environment variable is not set or is blank, the default value will be used.
@@ -272,29 +272,17 @@ Each message consists of a title, description, and color:
 
 Colors are represented in their decimal form.
 
-> [!NOTE]
->
-> Emojis in Discord Webhooks:
->
-> Discord webhooks support both default emojis and custom emojis.
->
-> Default emojis are available on all servers. You can use them directly in your messages.
->
-> Custom emojis are specific to the server they were added on. To use a custom emoji in a webhook message, it must exist on the server that the webhook is linked to.
->
-> Remember to use the correct syntax for each type of emoji
->
-> Use [this guide](https://docs.formie.pro/how-to-find-emoji-ids) to find the correct ID for the emoji you want to use.
+Emojis in Discord Webhooks:
+ - Discord webhooks support both default emojis and custom emojis.
+ - Default emojis are available on all servers. You can use them directly in your messages.
+ - Custom emojis are specific to the server they were added on. To use a custom emoji in a webhook message, it must exist on the server that the webhook is linked to.
+ - Remember to use the correct syntax for each type of emoji.
+ - Use [this guide](https://docs.formie.pro/how-to-find-emoji-ids) to find the correct ID for the emoji you want to use.
 
-> [!NOTE]
->
-> Mentions in Discord Webhooks:
->
-> Discord webhooks support Mentions in the format `<@user_id>`.
->
-> Add it to any message (title or description) to mention a user in the message.
->
-> Use [this guide](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID) to find the correct ID for the user.
+Mentions in Discord Webhooks:
+ - Discord webhooks support Mentions in the format `<@user_id>`.
+ - Add it to any message (title or description) to mention a user in the message.
+ - Use [this guide](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID) to find the correct ID for the user.
 
 Below are the environment variables for each type of webhook message:
 
@@ -356,11 +344,13 @@ Below are the environment variables for each type of webhook message:
 #### **- Player join message**
 
 > [!NOTE]
->
-> `PLAYER_NAME` is a variable that will be replaced with the name of the player that joined the server.
+> `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
+> 
 > `PLAYER_UID` is a variable that will be replaced with the UID of the player that joined the server.
+> 
 > `PLAYER_STEAM_UID` is a variable that will be replaced with the Steam UID of the player that joined the server.
-> Use it on the title and/or description to show the player's name, UID and/or Steam UID.
+> 
+> Use it on the title and/or description to show the player's name.
 
 > [!WARNING]
 >
@@ -382,10 +372,12 @@ Below are the environment variables for each type of webhook message:
 #### **- Player leave message**
 
 > [!NOTE]
->
 > `PLAYER_NAME` is a variable that will be replaced with the name of the player that left the server.
+> 
 > `PLAYER_UID` is a variable that will be replaced with the UID of the player that joined the server.
+> 
 > `PLAYER_STEAM_UID` is a variable that will be replaced with the Steam UID of the player that joined the server.
+> 
 > Use it on the title and/or description to show the player's name.
 
 > [!WARNING]
@@ -401,6 +393,7 @@ Below are the environment variables for each type of webhook message:
 > [!TIP]
 >
 > You can use the `PLAYER_STEAM_UID` variable to link the Steam profile of the player that joined the server on the **description** (doesn't work on the title).
+> 
 > E.g.:
 > - `### PLAYER_NAME (Steam: [PLAYER_STEAM_UID](https://steamcommunity.com/profiles/PLAYER_STEAM_UID))` will show the player's name and link to their Steam profile.
 > - `### [PLAYER_NAME](https://steamcommunity.com/profiles/PLAYER_STEAM_UID)` will show the player's name and their UID.
