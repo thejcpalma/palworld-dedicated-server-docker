@@ -158,6 +158,7 @@ function check_and_export() {
         hidden)
             to_export="${env_var:-$default}"
             export "$name"="\"${to_export}\""
+            to_export="████████████████"
             ;;
         *)
             to_export="${env_var:-$default}"
