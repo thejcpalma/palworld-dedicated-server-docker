@@ -137,10 +137,32 @@ compare_players() {
     if [ ${#left_players[@]} -ne 0 ]; then
         for player in "${left_players[@]}"; do
             local player_name
+            local player_uid
+            local player_steam_uid
+            local possible_steam_ids
+
             player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//')
-            log_info -n "> Player left: " && log_base "'$player_name'"
+            player_uid=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {print $(NF-1)}')
+            player_steam_uid=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {print $NF}')
+
+            log_info -n "> Player left: " && log_base -n "'$player_name' " && \
+            log_info -n "| UID: " && log_base -n "$player_uid" && \
+            log_info -n "| Steam ID: " && log_base "$player_steam_uid"
+
+            if [ "${#player_steam_uid}" -ne 17 ]; then
+                log_warning ">> Invalid Steam ID (Player name has special characters!) - Should have 17 digits but has ${#player_steam_uid} digits!"
+                log_warning ">> Possible Steam IDs:"
+                for i in {0..9}; do
+                    result=$(check_steam_profile "${player_steam_uid}${i}")
+                    if [[ -n "$result" ]]; then
+                        echo "$result"
+                        possible_steam_ids+="$(check_steam_profile "clean" "${player_steam_uid}${i}")\n"
+                    fi
+                done
+                player_steam_uid="###INVALID_STEAM_UID###"
+            fi
             player_name=$(echo "$player" | awk 'BEGIN{FS=OFS=","} {NF-=2; print $0}' | sed 's/,*$//' | tr '`' "'" | sed 's/\\\\/\\\\\\\\/g')
-            send_player_leave_notification "\`$player_name\`" "$player_uid" "$player_steam_uid"
+            send_player_leave_notification "\`$player_name\`" "$player_uid" "$player_steam_uid" "$possible_steam_ids"
         done
     fi
 
